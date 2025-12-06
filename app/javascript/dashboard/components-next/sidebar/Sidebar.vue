@@ -349,6 +349,31 @@ const menuItems = computed(() => {
         'portals_settings_index',
         'portals_new',
       ],
+      children: [
+        {
+          name: 'Help Center Articles',
+          label: t('SIDEBAR.HELP_CENTER_ARTICLES'),
+          to: accountScopedRoute('portals_index', {
+            navigationPath: 'portals_articles_index',
+          }),
+          activeOn: [
+            'portals_index',
+            'portals_articles_index',
+            'portals_articles_new',
+            'portals_articles_edit',
+            'portals_categories_articles_index',
+            'portals_categories_articles_edit',
+          ],
+        },
+        {
+          name: 'Help Center Categories',
+          label: t('SIDEBAR.HELP_CENTER_CATEGORIES'),
+          to: accountScopedRoute('portals_index', {
+            navigationPath: 'portals_categories_index',
+          }),
+          activeOn: ['portals_categories_index'],
+        },
+      ],
     },
     {
       name: 'Captain',
@@ -466,12 +491,6 @@ const menuItems = computed(() => {
           to: accountScopedRoute('settings_applications'),
         },
         {
-          name: 'Settings Audit Logs',
-          label: t('SIDEBAR.AUDIT_LOGS'),
-          icon: 'i-lucide-briefcase',
-          to: accountScopedRoute('auditlogs_list'),
-        },
-        {
           name: 'Settings Custom Roles',
           label: t('SIDEBAR.CUSTOM_ROLES'),
           icon: 'i-lucide-shield-plus',
@@ -482,18 +501,6 @@ const menuItems = computed(() => {
           label: t('SIDEBAR.SLA'),
           icon: 'i-lucide-clock-alert',
           to: accountScopedRoute('sla_list'),
-        },
-        {
-          name: 'Settings Security',
-          label: t('SIDEBAR.SECURITY'),
-          icon: 'i-lucide-shield',
-          to: accountScopedRoute('security_settings_index'),
-        },
-        {
-          name: 'Settings Billing',
-          label: t('SIDEBAR.BILLING'),
-          icon: 'i-lucide-credit-card',
-          to: accountScopedRoute('billing_settings_index'),
         },
       ],
     },

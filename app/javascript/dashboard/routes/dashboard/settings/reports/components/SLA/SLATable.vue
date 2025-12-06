@@ -63,16 +63,32 @@ export default {
         class="grid content-center h-12 grid-cols-12 gap-4 px-6 py-0 bg-n-slate-2 rounded-md"
       >
         <TableHeaderCell
-          :span="6"
+          :span="2"
           :label="$t('SLA_REPORTS.TABLE.HEADER.CONVERSATION')"
         />
         <TableHeaderCell
-          :span="2"
+          :span="1"
           :label="$t('SLA_REPORTS.TABLE.HEADER.POLICY')"
         />
         <TableHeaderCell
-          :span="2"
+          :span="1"
           :label="$t('SLA_REPORTS.TABLE.HEADER.AGENT')"
+        />
+        <TableHeaderCell
+          :span="1"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.SLA_START')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.FIRST_RESPONSE_TIME')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.NEXT_RESPONSE_TIME')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.RESOLUTION_TIME')"
         />
         <TableHeaderCell :span="1" label="" />
       </div>
@@ -89,6 +105,7 @@ export default {
           :conversation="slaReport.conversation"
           :conversation-id="slaReport.conversation.id"
           :sla-events="slaReport.sla_events"
+          :applied-sla="slaReport.applied_sla"
         />
       </div>
       <div v-else class="flex items-center justify-center h-32">

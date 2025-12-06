@@ -2,12 +2,16 @@
 <div class="max-w-5xl w-full flex flex-col flex-grow mx-auto py-8 px-4 md:px-8 gap-6">
   <%# Featured Articles %>
   <% if !@is_plain_layout_enabled %>
-    <div><%= render "public/api/v1/portals/featured_articles", articles: @portal.articles, categories: @portal.categories.where(locale: @locale), portal: @portal %></div>
+    <% matching_categories_for_featured = @portal.categories.where("locale = ? OR locale LIKE ?", @locale, "#{@locale}_%") %>
+    <div><%= render "public/api/v1/portals/featured_articles", articles: @portal.articles, categories: matching_categories_for_featured, portal: @portal %></div>
   <% end %>
-  <%# Categories with articles %>
+  <%# Categories %>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
-    <% @portal.categories.where(locale: @locale).joins(:articles).where(articles:{ status: :published }).order(position: :asc).group('categories.id').each do |category| %>
-      <%= render "public/api/v1/portals/category-block", category: category, portal: @portal %>
+    <% if @locale.present? %>
+      <% matching_categories = @portal.categories.where("locale = ? OR locale LIKE ?", @locale, "#{@locale}_%").order(position: :asc) %>
+      <% matching_categories.each do |category| %>
+        <%= render "public/api/v1/portals/category-block", category: category, portal: @portal %>
+      <% end %>
     <% end %>
   </div>
   <%# Uncategorized articles %>

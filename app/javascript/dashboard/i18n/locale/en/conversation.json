@@ -334,12 +334,21 @@
       "CONVERSATION_ACTIONS": "Conversation Actions",
       "CONVERSATION_LABELS": "Conversation Labels",
       "CONVERSATION_INFO": "Conversation Information",
+      "SLA": "SLA",
       "CONTACT_NOTES": "Contact Notes",
       "CONTACT_ATTRIBUTES": "Contact Attributes",
       "PREVIOUS_CONVERSATION": "Previous Conversations",
       "MACROS": "Macros",
       "LINEAR_ISSUES": "Linked Linear Issues",
       "SHOPIFY_ORDERS": "Shopify Orders"
+    },
+    "SLA": {
+      "STARTED_AT": "Started at",
+      "FIRST_RESPONSE_TIME": "First Response Time",
+      "NEXT_RESPONSE_TIME": "Next Response Time",
+      "RESOLUTION_TIME": "Resolution Time",
+      "SLA_TIME": "SLA time:",
+      "REAL_TIME": "Real time:"
     },
     "SHOPIFY": {
       "ORDER_ID": "Order #{id}",

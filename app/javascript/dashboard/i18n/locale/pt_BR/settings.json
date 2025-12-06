@@ -300,7 +300,7 @@
     "SETTINGS": "Configurações",
     "CONTACTS": "Contatos",
     "ACTIVE": "Ativo",
-    "CAPTAIN": "Capitão",
+    "CAPTAIN": "AI",
     "CAPTAIN_ASSISTANTS": "Assistentes",
     "CAPTAIN_DOCUMENTS": "Documentos",
     "CAPTAIN_RESPONSES": "FAQs",
@@ -351,13 +351,9 @@
     "BETA": "Beta",
     "REPORTS_OVERVIEW": "Visão geral",
     "REAUTHORIZE": "A conexão com a sua caixa de entrada expirou. Por favor, reconecte para continuar recebendo e enviando mensagens",
-    "HELP_CENTER": {
-      "TITLE": "Central de Ajuda",
-      "ARTICLES": "Artigos",
-      "CATEGORIES": "Categorias",
-      "LOCALES": "Localidades",
-      "SETTINGS": "Configurações"
-    },
+    "HELP_CENTER": "Central de Ajuda",
+    "HELP_CENTER_ARTICLES": "Artigos",
+    "HELP_CENTER_CATEGORIES": "Categorias",
     "CHANNELS": "Canais",
     "SET_AUTO_OFFLINE": {
       "TEXT": "Marcar offline automaticamente",
