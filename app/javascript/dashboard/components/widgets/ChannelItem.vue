@@ -31,6 +31,9 @@ const isActive = computed(() => {
   if (key === 'website') {
     return props.enabledFeatures.channel_website;
   }
+  if (key === 'form') {
+    return props.enabledFeatures.channel_form ?? true;
+  }
   if (key === 'facebook') {
     return props.enabledFeatures.channel_facebook && hasFbConfigured.value;
   }
@@ -58,6 +61,7 @@ const isActive = computed(() => {
     'line',
     'instagram',
     'voice',
+    'form',
   ].includes(key);
 });
 

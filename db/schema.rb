@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_03_091242) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_06_125454) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -456,6 +456,28 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_03_091242) do
     t.string "instagram_id"
     t.index ["page_id", "account_id"], name: "index_channel_facebook_pages_on_page_id_and_account_id", unique: true
     t.index ["page_id"], name: "index_channel_facebook_pages_on_page_id"
+  end
+
+  create_table "channel_forms", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.string "form_token"
+    t.string "hmac_token"
+    t.boolean "pre_chat_form_enabled", default: false
+    t.jsonb "pre_chat_form_options", default: {}
+    t.boolean "hmac_mandatory", default: false
+    t.text "allowed_domains", default: ""
+    t.integer "feature_flags", default: 7, null: false
+    t.string "form_url"
+    t.string "form_title"
+    t.string "form_description"
+    t.string "form_color", default: "#1f93ff"
+    t.integer "reply_time", default: 0
+    t.boolean "continuity_via_email", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_channel_forms_on_account_id"
+    t.index ["form_token"], name: "index_channel_forms_on_form_token", unique: true
+    t.index ["hmac_token"], name: "index_channel_forms_on_hmac_token", unique: true
   end
 
   create_table "channel_instagram", force: :cascade do |t|

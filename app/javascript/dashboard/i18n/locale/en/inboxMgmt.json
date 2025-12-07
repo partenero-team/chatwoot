@@ -38,6 +38,10 @@
         "LABEL": "Website Name",
         "PLACEHOLDER": "Enter your website name (eg: Acme Inc)"
       },
+      "FORM_NAME": {
+        "LABEL": "Form Name",
+        "PLACEHOLDER": "Enter your form name (eg: Contact Form)"
+      },
       "FB": {
         "HELP": "PS: By signing in, we only get access to your Page's messages. Your private messages can never be accessed by Chatwoot.",
         "CHOOSE_PAGE": "Choose Page",
@@ -112,6 +116,41 @@
         "SUBMIT_BUTTON": "Create inbox",
         "API": {
           "ERROR_MESSAGE": "We were not able to create a website channel, please try again"
+        }
+      },
+      "FORM_CHANNEL": {
+        "TITLE": "Form channel",
+        "DESC": "Create a channel for your form and allow end users to start conversations by filling out a form.",
+        "LOADING_MESSAGE": "Creating Form Channel",
+        "CHANNEL_DOMAIN": {
+          "LABEL": "Form URL",
+          "PLACEHOLDER": "Enter your form URL (eg: https://acme.com/contact)"
+        },
+        "CHANNEL_FORM_TITLE": {
+          "LABEL": "Form Title",
+          "PLACEHOLDER": "Contact Us"
+        },
+        "CHANNEL_FORM_DESCRIPTION": {
+          "LABEL": "Form Description",
+          "PLACEHOLDER": "Fill out the form below to start a conversation with us."
+        },
+        "CHANNEL_GREETING_MESSAGE": {
+          "LABEL": "Channel greeting message",
+          "PLACEHOLDER": "Acme Inc typically replies in a few hours."
+        },
+        "CHANNEL_GREETING_TOGGLE": {
+          "LABEL": "Enable channel greeting",
+          "HELP_TEXT": "Auto-send greeting messages when customers start a conversation and send their first message.",
+          "ENABLED": "Enabled",
+          "DISABLED": "Disabled"
+        },
+        "FORM_COLOR": {
+          "LABEL": "Form Color",
+          "PLACEHOLDER": "Update the form color"
+        },
+        "SUBMIT_BUTTON": "Create inbox",
+        "API": {
+          "ERROR_MESSAGE": "We were not able to create a form channel, please try again"
         }
       },
       "TWILIO": {
@@ -470,6 +509,10 @@
           "VOICE": {
             "TITLE": "Voice",
             "DESCRIPTION": "Integrate with Twilio Voice"
+          },
+          "FORM": {
+            "TITLE": "Form",
+            "DESCRIPTION": "Allow end users to start conversations by filling out a form"
           }
         }
       },
@@ -604,6 +647,7 @@
       "CONFIGURATION": "Configuration",
       "CAMPAIGN": "Campaigns",
       "PRE_CHAT_FORM": "Pre Chat Form",
+      "FORM": "Form",
       "BUSINESS_HOURS": "Business Hours",
       "WIDGET_BUILDER": "Widget Builder",
       "BOT_CONFIGURATION": "Bot Configuration",
@@ -676,6 +720,13 @@
     "SETTINGS_POPUP": {
       "MESSENGER_HEADING": "Messenger Script",
       "MESSENGER_SUB_HEAD": "Place this button inside your body tag",
+      "FORM_URL": {
+        "TITLE": "Form URL",
+        "SUBTITLE": "Direct link to access the form",
+        "DESCRIPTION": "Use this URL to access the form directly in a browser or share it with your users."
+      },
+      "FORM_SCRIPT_HEADING": "Form Embed Script",
+      "FORM_SCRIPT_SUB_HEAD": "Place this script inside your website's body tag to embed the form",
       "ALLOWED_DOMAINS": {
         "TITLE": "Allowed Domains",
         "SUBTITLE": "Add wildcard or regular domains separated by commas (leave blank to allow all), e.g. *.chatwoot.dev, chatwoot.com.",
@@ -1004,7 +1055,8 @@
       "LINE": "Line",
       "API": "API Channel",
       "INSTAGRAM": "Instagram",
-      "VOICE": "Voice"
+      "VOICE": "Voice",
+      "FORM": "Form"
     }
   }
 }
