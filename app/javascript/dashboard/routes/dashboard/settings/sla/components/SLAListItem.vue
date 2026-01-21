@@ -35,7 +35,7 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['delete']);
+const emit = defineEmits(['delete', 'edit']);
 </script>
 
 <template>
@@ -57,6 +57,14 @@ const emit = defineEmits(['delete']);
       </div>
     </template>
     <template #actions>
+      <Button
+        v-tooltip.top="$t('SLA.FORM.EDIT')"
+        faded
+        slate
+        xs
+        icon="i-lucide-edit"
+        @click="emit('edit')"
+      />
       <Button
         v-tooltip.top="$t('SLA.FORM.DELETE')"
         faded

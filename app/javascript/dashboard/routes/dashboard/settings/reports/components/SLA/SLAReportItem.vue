@@ -1,10 +1,10 @@
 <script setup>
 import { computed } from 'vue';
 import { format, fromUnixTime, intervalToDuration } from 'date-fns';
-
 import UserAvatarWithName from 'dashboard/components/widgets/UserAvatarWithName.vue';
 import CardLabels from 'dashboard/components/widgets/conversation/conversationCardComponents/CardLabels.vue';
 import SLAViewDetails from './SLAViewDetails.vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   slaName: {
@@ -28,6 +28,11 @@ const props = defineProps({
     default: () => ({}),
   },
 });
+const { t } = useI18n();
+import UserAvatarWithName from 'dashboard/components/widgets/UserAvatarWithName.vue';
+import CardLabels from 'dashboard/components/widgets/conversation/conversationCardComponents/CardLabels.vue';
+import SLAViewDetails from './SLAViewDetails.vue';
+import SLATimeColumn from './SLATimeColumn.vue';
 
 const conversationLabels = computed(() => {
   return props.conversation.labels
@@ -117,6 +122,73 @@ const rt = computed(() =>
     props.appliedSla.sla_resolution_time_threshold
   )
 );
+// Calculate real times and SLA times
+const firstResponseTimeData = computed(() => {
+  const slaAppliedAt = props.appliedSla.created_at;
+  const slaThreshold = props.appliedSla.sla_first_response_time_threshold;
+
+  if (!slaThreshold) {
+    return { slaTime: null, realTime: null };
+  }
+
+  const slaTime = slaThreshold;
+  let realTime = null;
+
+  if (props.conversation.first_reply_created_at) {
+    realTime = props.conversation.first_reply_created_at - slaAppliedAt;
+  }
+
+  return { slaTime, realTime };
+});
+
+const nextResponseTimeData = computed(() => {
+  const slaThreshold = props.appliedSla.sla_next_response_time_threshold;
+
+  if (!slaThreshold) {
+    return { slaTime: null, realTime: null };
+  }
+
+  const slaTime = slaThreshold;
+  let realTime = null;
+
+  // For next response time, we need to find when the agent responded after waiting_since
+  // This is more complex - we'd need message data. For now, we'll show the SLA time
+  // and mark real time as null if waiting_since exists but no response yet
+  if (props.conversation.waiting_since) {
+    // If still waiting, real time is not available yet
+    // If there's a response after waiting_since, we'd need message timestamps
+    // For MVP, we'll show -- for real time if waiting_since exists
+    realTime = null;
+  }
+
+  return { slaTime, realTime };
+});
+
+const resolutionTimeData = computed(() => {
+  const slaAppliedAt = props.appliedSla.created_at;
+  const slaThreshold = props.appliedSla.sla_resolution_time_threshold;
+
+  if (!slaThreshold) {
+    return { slaTime: null, realTime: null };
+  }
+
+  const slaTime = slaThreshold;
+  let realTime = null;
+
+  if (
+    props.conversation.status === 'resolved' &&
+    props.conversation.updated_at
+  ) {
+    realTime = props.conversation.updated_at - slaAppliedAt;
+  }
+
+  return { slaTime, realTime };
+});
+
+const formatSlaStartTime = timestamp => {
+  if (!timestamp) return '--';
+  return format(fromUnixTime(timestamp), 'MMM dd, yyyy, hh:mm a');
+};
 </script>
 
 <template>
@@ -154,7 +226,10 @@ const rt = computed(() =>
         v-if="conversation.assignee"
         :user="conversation.assignee"
       />
-      <span v-else class="text-n-slate-11">---</span>
+
+      <span v-else class="text-n-slate-11">{{
+        t('SLA_REPORTS.TABLE.NO_AGENT')
+      }}</span>
     </div>
 
     <!-- SLA Start -->
@@ -225,6 +300,30 @@ const rt = computed(() =>
         :sla-events="slaEvents"
         :conversation-created-at="appliedSla.created_at"
         :sla-policy="appliedSla"
+      />
+    </div>
+      
+    <div
+      class="flex items-center py-2 px-0 text-xs tracking-[0.5] text-n-slate-12 text-left rtl:text-right col-span-1"
+    >
+      {{ formatSlaStartTime(appliedSla.created_at) }}
+    </div>
+    <div class="col-span-2">
+      <SLATimeColumn
+        :sla-time="firstResponseTimeData.slaTime"
+        :real-time="firstResponseTimeData.realTime"
+      />
+    </div>
+    <div class="col-span-2">
+      <SLATimeColumn
+        :sla-time="nextResponseTimeData.slaTime"
+        :real-time="nextResponseTimeData.realTime"
+      />
+    </div>
+    <div class="col-span-2">
+      <SLATimeColumn
+        :sla-time="resolutionTimeData.slaTime"
+        :real-time="resolutionTimeData.realTime"
       />
     </div>
   </div>

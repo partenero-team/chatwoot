@@ -51,6 +51,9 @@ export default {
     isAWebWidgetInbox() {
       return this.channelType === INBOX_TYPES.WEB;
     },
+    isAFormInbox() {
+      return this.channelType === INBOX_TYPES.FORM;
+    },
     isATwilioChannel() {
       return this.channelType === INBOX_TYPES.TWILIO;
     },

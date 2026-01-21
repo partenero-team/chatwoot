@@ -551,7 +551,11 @@
       "HEADER": {
         "POLICY": "Política",
         "CONVERSATION": "Conversas",
-        "AGENT": "Agente"
+        "AGENT": "Agente",
+        "SLA_START": "Início do SLA",
+        "FIRST_RESPONSE_TIME": "Tempo da primeira resposta",
+        "NEXT_RESPONSE_TIME": "Tempo da próxima resposta",
+        "RESOLUTION_TIME": "Tempo de resolução"
       },
       "VIEW_DETAILS": "Ver detalhes"
     }

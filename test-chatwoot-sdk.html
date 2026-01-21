@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatwoot SDK Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chatwoot SDK Test Page</h1>
+        <p>This page is testing the Chatwoot SDK integration. The chat widget should appear in the bottom right corner.</p>
+        <p>Base URL: <code id="baseUrl">http://localhost:3000</code></p>
+        <p>Website Token: <code>ALhAmWVX9Vh4eqNdFfLKXBmz</code></p>
+        
+        <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+            <strong>⚠️ Prerequisites:</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li>Make sure Chatwoot is running on <code>http://localhost:3000</code></li>
+                <li>The SDK must be built or available at <code>/packs/js/sdk.js</code></li>
+                <li>To build the SDK, run: <code>pnpm run build:sdk</code></li>
+            </ul>
+        </div>
+        
+        <div id="status" style="margin-top: 20px; padding: 10px; background: #f0f0f0; border-radius: 4px;">
+            <strong>Status:</strong> <span id="statusText">Loading SDK...</span>
+        </div>
+        <div id="errors" style="margin-top: 10px; padding: 10px; background: #fee; border-radius: 4px; display: none;">
+            <strong>Errors:</strong>
+            <pre id="errorText" style="white-space: pre-wrap;"></pre>
+        </div>
+    </div>
+
+    <script>
+      (function(d,t) {
+        var BASE_URL="http://localhost:3000";
+        var statusEl = document.getElementById('statusText');
+        var errorDiv = document.getElementById('errors');
+        var errorText = document.getElementById('errorText');
+        
+        function updateStatus(msg) {
+          statusEl.textContent = msg;
+          console.log('[Chatwoot SDK]', msg);
+        }
+        
+        function showError(err) {
+          errorDiv.style.display = 'block';
+          errorText.textContent += err + '\n';
+          console.error('[Chatwoot SDK Error]', err);
+        }
+        
+        updateStatus('Creating script element...');
+        var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+        var scriptUrl = BASE_URL + "/packs/js/sdk.js";
+        g.src = scriptUrl;
+        g.async = true;
+        
+        g.onerror = function() {
+          showError('Failed to load SDK script from: ' + scriptUrl);
+          updateStatus('Failed to load SDK');
+        };
+        
+        g.onload=function(){
+          updateStatus('SDK script loaded, initializing...');
+          if (typeof window.chatwootSDK === 'undefined') {
+            showError('chatwootSDK is not defined after script load');
+            updateStatus('SDK not found');
+            return;
+          }
+          
+          try {
+            window.chatwootSDK.run({
+              websiteToken: 'ALhAmWVX9Vh4eqNdFfLKXBmz',
+              baseUrl: BASE_URL
+            });
+            updateStatus('SDK initialized successfully');
+            
+            // Listen for ready event
+            window.addEventListener('chatwoot:ready', function() {
+              updateStatus('Chatwoot widget is ready!');
+            });
+            
+            // Listen for errors
+            window.addEventListener('chatwoot:error', function(e) {
+              showError('Chatwoot error: ' + JSON.stringify(e.detail));
+            });
+          } catch(err) {
+            showError('Error initializing SDK: ' + err.message);
+            updateStatus('Initialization failed');
+          }
+        };
+        
+        s.parentNode.insertBefore(g,s);
+        updateStatus('Script element added to page');
+      })(document,"script");
+    </script>
+</body>
+</html>

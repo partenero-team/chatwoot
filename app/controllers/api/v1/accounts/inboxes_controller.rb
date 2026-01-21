@@ -111,7 +111,7 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   end
 
   def allowed_channel_types
-    %w[web_widget api email line telegram whatsapp sms]
+    %w[web_widget api email line telegram whatsapp sms form]
   end
 
   def update_inbox_working_hours
@@ -144,10 +144,12 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   end
 
   def update_channel_feature_flags
-    return unless @inbox.web_widget?
-    return unless permitted_params(Channel::WebWidget::EDITABLE_ATTRS)[:channel].key? :selected_feature_flags
+    return unless @inbox.web_widget? || @inbox.form?
 
-    @inbox.channel.selected_feature_flags = permitted_params(Channel::WebWidget::EDITABLE_ATTRS)[:channel][:selected_feature_flags]
+    channel_attrs = @inbox.web_widget? ? Channel::WebWidget::EDITABLE_ATTRS : Channel::Form::EDITABLE_ATTRS
+    return unless permitted_params(channel_attrs)[:channel].key? :selected_feature_flags
+
+    @inbox.channel.selected_feature_flags = permitted_params(channel_attrs)[:channel][:selected_feature_flags]
     @inbox.channel.save!
   end
 
@@ -187,7 +189,8 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
       'line' => Channel::Line,
       'telegram' => Channel::Telegram,
       'whatsapp' => Channel::Whatsapp,
-      'sms' => Channel::Sms
+      'sms' => Channel::Sms,
+      'form' => Channel::Form
     }[permitted_params[:channel][:type]]
   end
 

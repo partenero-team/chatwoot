@@ -61,14 +61,47 @@ export default {
       <div
         class="grid grid-cols-[2fr_1.5fr_1.5fr_1.8fr_2fr_2fr_2fr_1fr] gap-x-6 px-10 h-16 items-center text-xs font-medium text-n-slate-11 bg-n-slate-2 border-b border-n-weak"
       >
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.CONVERSATION') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.POLICY') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.AGENT') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.SLA_START') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.FRT') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.NRT') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.RT') }}</div>
-        <div></div>
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.CONVERSATION')"
+        />
+        <TableHeaderCell
+          :span="1"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.POLICY')"
+        />
+        <TableHeaderCell
+          :span="1"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.AGENT')"
+        />
+        <TableHeaderCell
+          :span="1"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.SLA_START')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.FRT')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.NRT')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.RT')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.FIRST_RESPONSE_TIME')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.NEXT_RESPONSE_TIME')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.RESOLUTION_TIME')"
+        />
+        <TableHeaderCell :span="1" label="" />
       </div>
 
       <!-- LOADING STATE -->
@@ -77,19 +110,19 @@ export default {
         <span>{{ $t('SLA_REPORTS.LOADING') }}</span>
       </div>
 
-      <!-- ROWS -->
-      <SLAReportItem
-        v-else-if="slaReports.length > 0"
-        v-for="slaReport in slaReports"
-        :key="slaReport.applied_sla.id"
-        :sla-name="slaReport.applied_sla.sla_name"
-        :conversation="slaReport.conversation"
-        :conversation-id="slaReport.conversation.id"
-        :sla-events="slaReport.sla_events"
-        :applied-sla="slaReport.applied_sla"
-      />
+      <div v-else-if="slaReports.length > 0">
+        <SLAReportItem
+          v-else-if="slaReports.length > 0"
+          v-for="slaReport in slaReports"
+          :key="slaReport.applied_sla.id"
+          :sla-name="slaReport.applied_sla.sla_name"
+          :conversation="slaReport.conversation"
+          :conversation-id="slaReport.conversation.id"
+          :sla-events="slaReport.sla_events"
+          :applied-sla="slaReport.applied_sla"
+        />
+      </div>
 
-      <!-- EMPTY STATE -->
       <div v-else class="flex items-center justify-center h-32">
         {{ $t('SLA_REPORTS.NO_RECORDS') }}
       </div>
