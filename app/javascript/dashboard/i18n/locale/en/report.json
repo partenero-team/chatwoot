@@ -565,13 +565,18 @@
         "SLA_START": "SLA Start",
         "FIRST_RESPONSE_TIME": "First Response Time",
         "NEXT_RESPONSE_TIME": "Next Response Time",
-        "RESOLUTION_TIME": "Resolution Time"
+        "RESOLUTION_TIME": "Resolution Time",
+        "FRT": "First Response Time",
+        "NRT": "Next Response Time",
+        "RT": "Resolution Time"
       },
       "VIEW_DETAILS": "View Details",
       "SLA_TIME_LABEL": "SLA:",
       "REAL_TIME_LABEL": "Real:",
       "NO_AGENT": "—"
-    }
+    },
+    "SLA": "SLA",
+    "REAL": "Real"
   },
   "SUMMARY_REPORTS": {
     "INBOX": "Inbox",
