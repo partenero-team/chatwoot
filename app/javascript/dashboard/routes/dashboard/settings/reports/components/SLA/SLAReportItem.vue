@@ -5,6 +5,7 @@ import UserAvatarWithName from 'dashboard/components/widgets/UserAvatarWithName.
 import CardLabels from 'dashboard/components/widgets/conversation/conversationCardComponents/CardLabels.vue';
 import SLAViewDetails from './SLAViewDetails.vue';
 import { useI18n } from 'vue-i18n';
+import SLATimeColumn from './SLATimeColumn.vue';
 
 const props = defineProps({
   slaName: {
@@ -29,10 +30,6 @@ const props = defineProps({
   },
 });
 const { t } = useI18n();
-import UserAvatarWithName from 'dashboard/components/widgets/UserAvatarWithName.vue';
-import CardLabels from 'dashboard/components/widgets/conversation/conversationCardComponents/CardLabels.vue';
-import SLAViewDetails from './SLAViewDetails.vue';
-import SLATimeColumn from './SLATimeColumn.vue';
 
 const conversationLabels = computed(() => {
   return props.conversation.labels
