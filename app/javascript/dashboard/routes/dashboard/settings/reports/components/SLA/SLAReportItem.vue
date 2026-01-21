@@ -71,6 +71,11 @@ const formatSlaStartTime = computed(() => {
     : '--';
 });
 
+const formatSlaStartTimestamp = timestamp => {
+  if (!timestamp) return '--';
+  return format(fromUnixTime(timestamp), 'MMM dd, yyyy, hh:mm a');
+};
+
 const getEventByType = type =>
   props.slaEvents.find(e => e.event_type === type);
 
@@ -182,10 +187,6 @@ const resolutionTimeData = computed(() => {
   return { slaTime, realTime };
 });
 
-const formatSlaStartTime = timestamp => {
-  if (!timestamp) return '--';
-  return format(fromUnixTime(timestamp), 'MMM dd, yyyy, hh:mm a');
-};
 </script>
 
 <template>
@@ -303,7 +304,7 @@ const formatSlaStartTime = timestamp => {
     <div
       class="flex items-center py-2 px-0 text-xs tracking-[0.5] text-n-slate-12 text-left rtl:text-right col-span-1"
     >
-      {{ formatSlaStartTime(appliedSla.created_at) }}
+      {{ formatSlaStartTimestamp(appliedSla.created_at) }}
     </div>
     <div class="col-span-2">
       <SLATimeColumn
