@@ -12,6 +12,14 @@ export default {
       type: Array,
       default: () => [],
     },
+    conversationCreatedAt: {
+      type: Number,
+      default: null,
+    },
+    slaPolicy: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   data() {
@@ -47,7 +55,8 @@ export default {
       <SLAPopoverCard
         v-if="showSlaPopoverCard"
         :sla-missed-events="slaEvents"
-        class="right-0"
+        :conversation-created-at="conversationCreatedAt"
+        :sla-policy="slaPolicy"
       />
     </div>
   </div>

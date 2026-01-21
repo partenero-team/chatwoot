@@ -55,12 +55,11 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div
-      class="min-w-full shadow outline-1 outline outline-n-container rounded-xl bg-n-solid-2 p-6"
-    >
+  <div class="w-full">
+    <div class="rounded-xl overflow-hidden border border-n-weak bg-n-solid-2 w-full">
+      <!-- HEADER (APENAS UMA VEZ) -->
       <div
-        class="grid content-center h-12 grid-cols-12 gap-4 px-6 py-0 bg-n-slate-2 rounded-md"
+        class="grid grid-cols-[2fr_1.5fr_1.5fr_1.8fr_2fr_2fr_2fr_1fr] gap-x-6 px-10 h-16 items-center text-xs font-medium text-n-slate-11 bg-n-slate-2 border-b border-n-weak"
       >
         <TableHeaderCell
           :span="2"
@@ -80,6 +79,18 @@ export default {
         />
         <TableHeaderCell
           :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.FRT')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.NRT')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.RT')"
+        />
+        <TableHeaderCell
+          :span="2"
           :label="$t('SLA_REPORTS.TABLE.HEADER.FIRST_RESPONSE_TIME')"
         />
         <TableHeaderCell
@@ -93,12 +104,15 @@ export default {
         <TableHeaderCell :span="1" label="" />
       </div>
 
-      <div v-if="isLoading" class="flex items-center justify-center h-32">
+      <!-- LOADING STATE -->
+      <div v-if="isLoading" class="flex items-center justify-center h-32 gap-2">
         <Spinner />
         <span>{{ $t('SLA_REPORTS.LOADING') }}</span>
       </div>
+
       <div v-else-if="slaReports.length > 0">
         <SLAReportItem
+          v-else-if="slaReports.length > 0"
           v-for="slaReport in slaReports"
           :key="slaReport.applied_sla.id"
           :sla-name="slaReport.applied_sla.sla_name"
@@ -108,10 +122,13 @@ export default {
           :applied-sla="slaReport.applied_sla"
         />
       </div>
+
       <div v-else class="flex items-center justify-center h-32">
         {{ $t('SLA_REPORTS.NO_RECORDS') }}
       </div>
     </div>
+
+    <!-- FOOTER -->
     <TableFooter
       v-if="shouldShowFooter"
       :current-page="currentPage"
