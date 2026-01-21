@@ -194,16 +194,44 @@ export default {
       <woot-code :script="inbox.callback_webhook_url" lang="html" />
     </SettingsSection>
   </div>
-  <div v-else-if="isAWebWidgetInbox">
+  <div v-else-if="isAWebWidgetInbox || isAFormInbox">
     <div class="mx-8">
       <SettingsSection
-        :title="$t('INBOX_MGMT.SETTINGS_POPUP.MESSENGER_HEADING')"
-        :sub-title="$t('INBOX_MGMT.SETTINGS_POPUP.MESSENGER_SUB_HEAD')"
+        v-if="isAFormInbox"
+        :title="$t('INBOX_MGMT.SETTINGS_POPUP.FORM_URL.TITLE')"
+        :sub-title="$t('INBOX_MGMT.SETTINGS_POPUP.FORM_URL.SUBTITLE')"
+      >
+        <div class="flex flex-col gap-2">
+          <a
+            :href="inbox.public_form_url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-n-blue-9 hover:text-n-blue-10 underline break-all"
+          >
+            {{ inbox.public_form_url }}
+          </a>
+          <p class="text-sm text-n-slate-11">
+            {{ $t('INBOX_MGMT.SETTINGS_POPUP.FORM_URL.DESCRIPTION') }}
+          </p>
+        </div>
+      </SettingsSection>
+
+      <SettingsSection
+        :title="
+          isAFormInbox
+            ? $t('INBOX_MGMT.SETTINGS_POPUP.FORM_SCRIPT_HEADING')
+            : $t('INBOX_MGMT.SETTINGS_POPUP.MESSENGER_HEADING')
+        "
+        :sub-title="
+          isAFormInbox
+            ? $t('INBOX_MGMT.SETTINGS_POPUP.FORM_SCRIPT_SUB_HEAD')
+            : $t('INBOX_MGMT.SETTINGS_POPUP.MESSENGER_SUB_HEAD')
+        "
       >
         <woot-code
-          :script="inbox.web_widget_script"
+          :script="isAFormInbox ? inbox.form_script : inbox.web_widget_script"
           lang="html"
-          :codepen-title="`${inbox.name} - Chatwoot Widget Test`"
+          :codepen-title="`${inbox.name} - Chatwoot ${isAFormInbox ? 'Form' : 'Widget'} Test`"
           enable-code-pen
         />
       </SettingsSection>

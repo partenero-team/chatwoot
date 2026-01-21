@@ -25,6 +25,6 @@ class Api::V1::Widget::LabelsController < Api::V1::Widget::BaseController
   end
 
   def permitted_params
-    params.permit(:id, :label, :website_token)
+    params.permit(:id, :label, :website_token, :form_token)
   end
 end

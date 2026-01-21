@@ -7,12 +7,7 @@ import Avatar from 'next/avatar/Avatar.vue';
 import SettingIntroBanner from 'dashboard/components/widgets/SettingIntroBanner.vue';
 import SettingsSection from '../../../../components/SettingsSection.vue';
 import inboxMixin from 'shared/mixins/inboxMixin';
-import FacebookReauthorize from './facebook/Reauthorize.vue';
-import InstagramReauthorize from './channels/instagram/Reauthorize.vue';
 import DuplicateInboxBanner from './channels/instagram/DuplicateInboxBanner.vue';
-import MicrosoftReauthorize from './channels/microsoft/Reauthorize.vue';
-import GoogleReauthorize from './channels/google/Reauthorize.vue';
-import WhatsappReauthorize from './channels/whatsapp/Reauthorize.vue';
 import InboxHealthAPI from 'dashboard/api/inboxHealth';
 import PreChatFormSettings from './PreChatForm/Settings.vue';
 import WeeklyAvailability from './components/WeeklyAvailability.vue';
@@ -37,7 +32,6 @@ export default {
     CollaboratorsPage,
     ConfigurationPage,
     CustomerSatisfactionPage,
-    FacebookReauthorize,
     GreetingsEditor,
     PreChatFormSettings,
     SettingIntroBanner,
@@ -45,11 +39,7 @@ export default {
     WeeklyAvailability,
     WidgetBuilder,
     SenderNameExamplePreview,
-    MicrosoftReauthorize,
-    GoogleReauthorize,
     NextButton,
-    InstagramReauthorize,
-    WhatsappReauthorize,
     DuplicateInboxBanner,
     Editor,
     Avatar,
@@ -124,7 +114,7 @@ export default {
         },
       ];
 
-      if (!this.isAVoiceChannel) {
+      if (!this.isAVoiceChannel && !this.isAFormInbox) {
         visibleToAllChannelTabs = [
           ...visibleToAllChannelTabs,
           {
@@ -138,13 +128,21 @@ export default {
         ];
       }
 
-      if (this.isAWebWidgetInbox) {
+      if (this.isAWebWidgetInbox || this.isAFormInbox) {
         visibleToAllChannelTabs = [
           ...visibleToAllChannelTabs,
           {
             key: 'preChatForm',
-            name: this.$t('INBOX_MGMT.TABS.PRE_CHAT_FORM'),
+            name: this.isAFormInbox
+              ? this.$t('INBOX_MGMT.TABS.FORM')
+              : this.$t('INBOX_MGMT.TABS.PRE_CHAT_FORM'),
           },
+        ];
+      }
+
+      if (this.isAWebWidgetInbox && !this.isAFormInbox) {
+        visibleToAllChannelTabs = [
+          ...visibleToAllChannelTabs,
           {
             key: 'widgetBuilder',
             name: this.$t('INBOX_MGMT.TABS.WIDGET_BUILDER'),
@@ -159,7 +157,8 @@ export default {
         this.isAVoiceChannel ||
         (this.isAnEmailChannel && !this.inbox.provider) ||
         this.shouldShowWhatsAppConfiguration ||
-        this.isAWebWidgetInbox
+        this.isAWebWidgetInbox ||
+        this.isAFormInbox
       ) {
         visibleToAllChannelTabs = [
           ...visibleToAllChannelTabs,
@@ -171,7 +170,11 @@ export default {
       }
 
       if (
-        this.isFeatureEnabledonAccount(this.accountId, FEATURE_FLAGS.AGENT_BOTS)
+        this.isFeatureEnabledonAccount(
+          this.accountId,
+          FEATURE_FLAGS.AGENT_BOTS
+        ) &&
+        !this.isAFormInbox
       ) {
         visibleToAllChannelTabs = [
           ...visibleToAllChannelTabs,
@@ -376,8 +379,12 @@ export default {
         this.avatarUrl = this.inbox.avatar_url;
         this.selectedInboxName = this.inbox.name;
         this.webhookUrl = this.inbox.webhook_url;
-        this.greetingEnabled = this.inbox.greeting_enabled || false;
-        this.greetingMessage = this.inbox.greeting_message || '';
+        this.greetingEnabled = this.isAFormInbox
+          ? false
+          : this.inbox.greeting_enabled || false;
+        this.greetingMessage = this.isAFormInbox
+          ? ''
+          : this.inbox.greeting_message || '';
         this.emailCollectEnabled = this.inbox.enable_email_collect;
         this.senderNameType = this.inbox.sender_name_type;
         this.businessName = this.inbox.business_name;
@@ -402,8 +409,8 @@ export default {
           name: this.selectedInboxName?.trim(),
           enable_email_collect: this.emailCollectEnabled,
           allow_messages_after_resolved: this.allowMessagesAfterResolved,
-          greeting_enabled: this.greetingEnabled,
-          greeting_message: this.greetingMessage || '',
+          greeting_enabled: this.isAFormInbox ? false : this.greetingEnabled,
+          greeting_message: this.isAFormInbox ? '' : this.greetingMessage || '',
           portal_id: this.selectedPortalSlug
             ? this.portals.find(
                 portal => portal.slug === this.selectedPortalSlug
@@ -608,7 +615,7 @@ export default {
             <input v-model="whatsAppAPIProviderName" type="text" disabled />
           </label>
 
-          <label class="pb-4">
+          <label v-if="!isAFormInbox" class="pb-4">
             {{
               $t('INBOX_MGMT.ADD.WEBSITE_CHANNEL.CHANNEL_GREETING_TOGGLE.LABEL')
             }}
@@ -636,7 +643,7 @@ export default {
               }}
             </p>
           </label>
-          <div v-if="greetingEnabled" class="pb-4">
+          <div v-if="greetingEnabled && !isAFormInbox" class="pb-4">
             <GreetingsEditor
               v-model="greetingMessage"
               :label="

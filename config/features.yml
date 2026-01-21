@@ -81,6 +81,9 @@
 - name: channel_website
   display_name: Website Channel
   enabled: true
+- name: channel_form
+  display_name: Form Channel
+  enabled: true
 - name: campaigns
   display_name: Campaigns
   enabled: true

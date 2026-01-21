@@ -300,7 +300,7 @@
     "SETTINGS": "Settings",
     "CONTACTS": "Contacts",
     "ACTIVE": "Active",
-    "CAPTAIN": "Captain",
+    "CAPTAIN": "AI",
     "CAPTAIN_ASSISTANTS": "Assistants",
     "CAPTAIN_DOCUMENTS": "Documents",
     "CAPTAIN_RESPONSES": "FAQs",
@@ -351,6 +351,8 @@
     "BETA": "Beta",
     "REPORTS_OVERVIEW": "Overview",
     "HELP_CENTER": "Help Center",
+    "HELP_CENTER_ARTICLES": "Articles",
+    "HELP_CENTER_CATEGORIES": "Categories",
     "REAUTHORIZE": "Your inbox connection has expired, please reconnect\n to continue receiving and sending messages",
     "CHANNELS": "Channels",
     "SET_AUTO_OFFLINE": {
@@ -377,12 +379,12 @@
       "BUTTON_TXT": "Go to the billing portal"
     },
     "CAPTAIN": {
-      "TITLE": "Captain",
-      "DESCRIPTION": "Manage usage and credits for Captain AI.",
+      "TITLE": "AI",
+      "DESCRIPTION": "Manage usage and credits for AI.",
       "BUTTON_TXT": "Buy more credits",
       "DOCUMENTS": "Documents",
       "RESPONSES": "Responses",
-      "UPGRADE": "Captain is not available on the free plan, upgrade now to get access to assistants, copilot and more."
+      "UPGRADE": "AI is not available on the free plan, upgrade now to get access to assistants, copilot and more."
     },
     "CHAT_WITH_US": {
       "TITLE": "Need help?",

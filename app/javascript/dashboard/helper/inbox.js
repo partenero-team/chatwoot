@@ -11,6 +11,7 @@ export const INBOX_TYPES = {
   SMS: 'Channel::Sms',
   INSTAGRAM: 'Channel::Instagram',
   VOICE: 'Channel::Voice',
+  FORM: 'Channel::Form',
 };
 
 const INBOX_ICON_MAP_FILL = {
@@ -24,6 +25,7 @@ const INBOX_ICON_MAP_FILL = {
   [INBOX_TYPES.LINE]: 'i-ri-line-fill',
   [INBOX_TYPES.INSTAGRAM]: 'i-ri-instagram-fill',
   [INBOX_TYPES.VOICE]: 'i-ri-phone-fill',
+  [INBOX_TYPES.FORM]: 'i-ri-file-text-fill',
 };
 
 const DEFAULT_ICON_FILL = 'i-ri-chat-1-fill';
@@ -39,6 +41,7 @@ const INBOX_ICON_MAP_LINE = {
   [INBOX_TYPES.LINE]: 'i-ri-line-line',
   [INBOX_TYPES.INSTAGRAM]: 'i-ri-instagram-line',
   [INBOX_TYPES.VOICE]: 'i-ri-phone-line',
+  [INBOX_TYPES.FORM]: 'i-ri-file-text-line',
 };
 
 const DEFAULT_ICON_LINE = 'i-ri-chat-1-line';
@@ -47,6 +50,9 @@ export const getInboxSource = (type, phoneNumber, inbox) => {
   switch (type) {
     case INBOX_TYPES.WEB:
       return inbox.website_url || '';
+
+    case INBOX_TYPES.FORM:
+      return inbox.form_url || '';
 
     case INBOX_TYPES.TWILIO:
     case INBOX_TYPES.WHATSAPP:
@@ -64,6 +70,9 @@ export const getReadableInboxByType = (type, phoneNumber) => {
   switch (type) {
     case INBOX_TYPES.WEB:
       return 'livechat';
+
+    case INBOX_TYPES.FORM:
+      return 'form';
 
     case INBOX_TYPES.FB:
       return 'facebook';
@@ -101,6 +110,9 @@ export const getInboxClassByType = (type, phoneNumber) => {
   switch (type) {
     case INBOX_TYPES.WEB:
       return 'globe-desktop';
+
+    case INBOX_TYPES.FORM:
+      return 'file-text';
 
     case INBOX_TYPES.FB:
       return 'brand-facebook';

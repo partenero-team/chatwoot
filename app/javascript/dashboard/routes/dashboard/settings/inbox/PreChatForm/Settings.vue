@@ -5,6 +5,7 @@ import PreChatFields from './PreChatFields.vue';
 import { getPreChatFields, standardFieldKeys } from 'dashboard/helper/preChat';
 import WootMessageEditor from 'dashboard/components/widgets/WootWriter/Editor.vue';
 import NextButton from 'dashboard/components-next/button/Button.vue';
+import inboxMixin from 'shared/mixins/inboxMixin';
 
 export default {
   components: {
@@ -12,6 +13,7 @@ export default {
     WootMessageEditor,
     NextButton,
   },
+  mixins: [inboxMixin],
   props: {
     inbox: {
       type: Object,
@@ -48,8 +50,13 @@ export default {
   },
   methods: {
     setDefaults() {
-      const { pre_chat_form_enabled: preChatFormEnabled } = this.inbox;
-      this.preChatFormEnabled = preChatFormEnabled;
+      // For Form channels, always enable the form
+      if (this.isAFormInbox) {
+        this.preChatFormEnabled = true;
+      } else {
+        const { pre_chat_form_enabled: preChatFormEnabled } = this.inbox;
+        this.preChatFormEnabled = preChatFormEnabled || false;
+      }
       const {
         pre_chat_message: preChatMessage,
         pre_chat_fields: preChatFields,
@@ -74,11 +81,15 @@ export default {
 
     async updateInbox() {
       try {
+        // For Form channels, always set pre_chat_form_enabled to true
+        const preChatFormEnabled = this.isAFormInbox
+          ? true
+          : this.preChatFormEnabled;
         const payload = {
           id: this.inbox.id,
           formData: false,
           channel: {
-            pre_chat_form_enabled: this.preChatFormEnabled,
+            pre_chat_form_enabled: preChatFormEnabled,
             pre_chat_form_options: {
               pre_chat_message: this.preChatMessage,
               pre_chat_fields: this.preChatFields,
@@ -101,7 +112,7 @@ export default {
       {{ $t('INBOX_MGMT.PRE_CHAT_FORM.DESCRIPTION') }}
     </div>
     <form class="flex flex-col" @submit.prevent="updateInbox">
-      <label class="w-1/4">
+      <label v-if="!isAFormInbox" class="w-1/4">
         {{ $t('INBOX_MGMT.PRE_CHAT_FORM.ENABLE.LABEL') }}
         <select v-model="preChatFormEnabled">
           <option :value="true">
@@ -112,7 +123,7 @@ export default {
           </option>
         </select>
       </label>
-      <div v-if="preChatFormEnabled">
+      <div v-if="preChatFormEnabled || isAFormInbox">
         <div>
           <label>
             {{ $t('INBOX_MGMT.PRE_CHAT_FORM.PRE_CHAT_MESSAGE.LABEL') }}

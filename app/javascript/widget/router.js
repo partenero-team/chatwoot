@@ -66,6 +66,17 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   // Prevent any user interactions during route transition
   await store.dispatch('appConfig/setRouteTransitionState', true);
+
+  // If form_token is in URL and we're on the home route, redirect to prechat-form
+  const urlParams = new URLSearchParams(window.location.search);
+  const hasFormToken = urlParams.has('form_token');
+  const isHomeRoute = to.name === 'home' || to.path === '/';
+
+  if (hasFormToken && isHomeRoute) {
+    next({ name: 'prechat-form', replace: true });
+    return;
+  }
+
   next();
 });
 

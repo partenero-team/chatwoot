@@ -1,5 +1,6 @@
 <script>
 import AddSLA from './AddSLA.vue';
+import EditSLA from './EditSLA.vue';
 import SettingsLayout from '../SettingsLayout.vue';
 import SLAEmptyState from './components/SLAEmptyState.vue';
 import SLAHeader from './components/SLAHeader.vue';
@@ -14,6 +15,7 @@ import { useAlert } from 'dashboard/composables';
 export default {
   components: {
     AddSLA,
+    EditSLA,
     SettingsLayout,
     SLAEmptyState,
     SLAHeader,
@@ -25,14 +27,15 @@ export default {
     return {
       loading: {},
       showAddPopup: false,
+      showEditPopup: false,
       showDeleteConfirmationPopup: false,
       selectedResponse: {},
+      selectedSlaForEdit: null,
     };
   },
   computed: {
     ...mapGetters({
       isOnChatwootCloud: 'globalConfig/isOnChatwootCloud',
-      isFeatureEnabledonAccount: 'accounts/isFeatureEnabledonAccount',
       records: 'sla/getSLA',
       currentUser: 'getCurrentUser',
       accountId: 'getCurrentAccountId',
@@ -66,6 +69,17 @@ export default {
     },
     hideAddPopup() {
       this.showAddPopup = false;
+    },
+    openEditPopup(sla) {
+      if (this.isBehindAPaywall) {
+        return;
+      }
+      this.selectedSlaForEdit = sla;
+      this.showEditPopup = true;
+    },
+    hideEditPopup() {
+      this.showEditPopup = false;
+      this.selectedSlaForEdit = null;
     },
     openDeletePopup(response) {
       this.showDeleteConfirmationPopup = true;
@@ -144,12 +158,21 @@ export default {
           :resolution-time="displayTime(sla.resolution_time_threshold)"
           :has-business-hours="sla.only_during_business_hours"
           :is-loading="loading[sla.id]"
+          @edit="openEditPopup(sla)"
           @delete="openDeletePopup(sla)"
         />
       </div>
 
       <woot-modal v-model:show="showAddPopup" :on-close="hideAddPopup">
         <AddSLA @close="hideAddPopup" />
+      </woot-modal>
+
+      <woot-modal v-model:show="showEditPopup" :on-close="hideEditPopup">
+        <EditSLA
+          v-if="selectedSlaForEdit"
+          :selected-sla="selectedSlaForEdit"
+          @close="hideEditPopup"
+        />
       </woot-modal>
 
       <woot-delete-modal

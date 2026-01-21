@@ -35,15 +35,23 @@ json.tweets_enabled resource.channel.try(:tweets_enabled) if resource.twitter?
 ## WebWidget Attributes
 json.allowed_domains resource.channel.try(:allowed_domains)
 json.widget_color resource.channel.try(:widget_color)
+json.form_color resource.channel.try(:form_color)
 json.website_url resource.channel.try(:website_url)
+json.form_url resource.channel.try(:form_url)
 json.hmac_mandatory resource.channel.try(:hmac_mandatory)
 json.welcome_title resource.channel.try(:welcome_title)
 json.welcome_tagline resource.channel.try(:welcome_tagline)
+json.form_title resource.channel.try(:form_title)
+json.form_description resource.channel.try(:form_description)
 json.web_widget_script resource.channel.try(:web_widget_script)
+json.form_script resource.channel.try(:form_script)
+json.form_url resource.channel.try(:form_url)
+json.public_form_url resource.channel.try(:public_form_url) if resource.form?
 json.website_token resource.channel.try(:website_token)
+json.form_token resource.channel.try(:form_token)
 json.selected_feature_flags resource.channel.try(:selected_feature_flags)
 json.reply_time resource.channel.try(:reply_time)
-if resource.web_widget?
+if resource.web_widget? || resource.form?
   json.hmac_token resource.channel.try(:hmac_token) if Current.account_user&.administrator?
   json.pre_chat_form_enabled resource.channel.try(:pre_chat_form_enabled)
   json.pre_chat_form_options resource.channel.try(:pre_chat_form_options)

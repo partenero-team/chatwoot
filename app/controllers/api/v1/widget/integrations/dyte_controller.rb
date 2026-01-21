@@ -31,6 +31,6 @@ class Api::V1::Widget::Integrations::DyteController < Api::V1::Widget::BaseContr
   end
 
   def permitted_params
-    params.permit(:website_token, :message_id)
+    params.permit(:website_token, :form_token, :message_id)
   end
 end

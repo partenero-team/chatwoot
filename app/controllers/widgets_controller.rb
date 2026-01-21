@@ -18,10 +18,14 @@ class WidgetsController < ActionController::Base
   end
 
   def set_web_widget
-    @web_widget = ::Channel::WebWidget.find_by!(website_token: permitted_params[:website_token])
+    @web_widget = if permitted_params[:form_token].present?
+                    ::Channel::Form.find_by!(form_token: permitted_params[:form_token])
+                  else
+                    ::Channel::WebWidget.find_by!(website_token: permitted_params[:website_token])
+                  end
   rescue ActiveRecord::RecordNotFound
-    Rails.logger.error('web widget does not exist')
-    render json: { error: 'web widget does not exist' }, status: :not_found
+    Rails.logger.error('web widget or form does not exist')
+    render json: { error: 'web widget or form does not exist' }, status: :not_found
   end
 
   def set_token
@@ -66,14 +70,15 @@ class WidgetsController < ActionController::Base
   end
 
   def permitted_params
-    params.permit(:website_token, :cw_conversation)
+    params.permit(:website_token, :form_token, :cw_conversation)
   end
 
   def allow_iframe_requests
-    if @web_widget.allowed_domains.blank?
+    allowed_domains = @web_widget.respond_to?(:allowed_domains) ? @web_widget.allowed_domains : ''
+    if allowed_domains.blank?
       response.headers.delete('X-Frame-Options')
     else
-      domains = @web_widget.allowed_domains.split(',').map(&:strip).join(' ')
+      domains = allowed_domains.split(',').map(&:strip).join(' ')
       response.headers['Content-Security-Policy'] = "frame-ancestors #{domains}"
     end
   end

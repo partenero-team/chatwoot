@@ -61,6 +61,10 @@ export const useInbox = (inboxId = null) => {
     return channelType.value === INBOX_TYPES.WEB;
   });
 
+  const isAFormInbox = computed(() => {
+    return channelType.value === INBOX_TYPES.FORM;
+  });
+
   const isATwilioChannel = computed(() => {
     return channelType.value === INBOX_TYPES.TWILIO;
   });
@@ -141,6 +145,7 @@ export const useInbox = (inboxId = null) => {
     isATelegramChannel,
     isATwilioChannel,
     isAWebWidgetInbox,
+    isAFormInbox,
     isAWhatsAppChannel,
     isAMicrosoftInbox,
     isAGoogleInbox,

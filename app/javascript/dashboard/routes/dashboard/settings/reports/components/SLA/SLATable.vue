@@ -76,20 +76,17 @@ export default {
         <Spinner />
         <span>{{ $t('SLA_REPORTS.LOADING') }}</span>
       </div>
-
-      <!-- ROWS -->
-      <SLAReportItem
-        v-else-if="slaReports.length > 0"
-        v-for="slaReport in slaReports"
-        :key="slaReport.applied_sla.id"
-        :sla-name="slaReport.applied_sla.sla_name"
-        :conversation="slaReport.conversation"
-        :conversation-id="slaReport.conversation.id"
-        :sla-events="slaReport.sla_events"
-        :applied-sla="slaReport.applied_sla"
-      />
-
-      <!-- EMPTY STATE -->
+      <div v-else-if="slaReports.length > 0">
+        <SLAReportItem
+          v-for="slaReport in slaReports"
+          :key="slaReport.applied_sla.id"
+          :sla-name="slaReport.applied_sla.sla_name"
+          :conversation="slaReport.conversation"
+          :conversation-id="slaReport.conversation.id"
+          :sla-events="slaReport.sla_events"
+          :applied-sla="slaReport.applied_sla"
+        />
+      </div>
       <div v-else class="flex items-center justify-center h-32">
         {{ $t('SLA_REPORTS.NO_RECORDS') }}
       </div>

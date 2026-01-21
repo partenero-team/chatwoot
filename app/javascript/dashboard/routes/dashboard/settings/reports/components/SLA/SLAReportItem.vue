@@ -1,10 +1,11 @@
 <script setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { format, fromUnixTime, intervalToDuration } from 'date-fns';
-
 import UserAvatarWithName from 'dashboard/components/widgets/UserAvatarWithName.vue';
 import CardLabels from 'dashboard/components/widgets/conversation/conversationCardComponents/CardLabels.vue';
 import SLAViewDetails from './SLAViewDetails.vue';
+import SLATimeColumn from './SLATimeColumn.vue';
 
 const props = defineProps({
   slaName: {
@@ -28,6 +29,7 @@ const props = defineProps({
     default: () => ({}),
   },
 });
+const { t } = useI18n();
 
 const conversationLabels = computed(() => {
   return props.conversation.labels

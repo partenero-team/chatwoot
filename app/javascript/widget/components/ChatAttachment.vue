@@ -75,9 +75,14 @@ export default {
       try {
         if (checkFileSizeLimit(file, MAXIMUM_FILE_UPLOAD_SIZE)) {
           const { websiteToken } = window.chatwootWebChannel;
+          const searchParams = new URLSearchParams(window.location.search);
+          const formToken = searchParams.get('form_token');
+          const tokenParam = formToken
+            ? `form_token=${websiteToken}`
+            : `website_token=${websiteToken}`;
           const upload = new DirectUpload(
             file.file,
-            `/api/v1/widget/direct_uploads?website_token=${websiteToken}`,
+            `/api/v1/widget/direct_uploads?${tokenParam}`,
             {
               directUploadWillCreateBlobWithXHR: xhr => {
                 xhr.setRequestHeader('X-Auth-Token', window.authToken);
