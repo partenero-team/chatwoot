@@ -563,9 +563,16 @@
       "HEADER": {
         "POLICY": "Política",
         "CONVERSATION": "Conversas",
-        "AGENT": "Agente"
+        "AGENT": "Agente",
+        "SLA_START": "Início do SLA",
+        "FIRST_RESPONSE_TIME": "Tempo de Primeira Resposta",
+        "NEXT_RESPONSE_TIME": "Tempo de Próxima Resposta",
+        "RESOLUTION_TIME": "Tempo de Resolução"
       },
-      "VIEW_DETAILS": "Ver detalhes"
+      "VIEW_DETAILS": "Ver detalhes",
+      "SLA_TIME_LABEL": "SLA:",
+      "REAL_TIME_LABEL": "Real:",
+      "NO_AGENT": "—"
     }
   },
   "SUMMARY_REPORTS": {

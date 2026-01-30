@@ -83,6 +83,14 @@
         "ERROR_MESSAGE": "Ocorreu um erro, por favor tente novamente"
       }
     },
+    "EDIT": {
+      "TITLE": "Editar SLA",
+      "DESC": "Atualize seu acordo de nível de serviço",
+      "API": {
+        "SUCCESS_MESSAGE": "SLA atualizado com sucesso",
+        "ERROR_MESSAGE": "Ocorreu um erro, por favor tente novamente"
+      }
+    },
     "DELETE": {
       "TITLE": "Excluir SLA",
       "API": {

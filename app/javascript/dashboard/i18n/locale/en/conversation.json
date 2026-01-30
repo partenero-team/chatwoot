@@ -352,6 +352,14 @@
       "LINEAR_ISSUES": "Linked Linear Issues",
       "SHOPIFY_ORDERS": "Shopify Orders"
     },
+    "SLA": {
+      "STARTED_AT": "Started at",
+      "FIRST_RESPONSE_TIME": "First Response Time",
+      "NEXT_RESPONSE_TIME": "Next Response Time",
+      "RESOLUTION_TIME": "Resolution Time",
+      "SLA_TIME": "SLA time:",
+      "REAL_TIME": "Real time:"
+    },
     "SHOPIFY": {
       "ORDER_ID": "Order #{id}",
       "ERROR": "Error loading orders",

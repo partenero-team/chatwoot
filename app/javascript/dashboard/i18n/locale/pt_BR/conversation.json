@@ -351,6 +351,14 @@
       "LINEAR_ISSUES": "Problemas do Linear vinculados",
       "SHOPIFY_ORDERS": "Shopify Orders"
     },
+    "SLA": {
+      "STARTED_AT": "Início em",
+      "FIRST_RESPONSE_TIME": "Tempo de Primeira Resposta",
+      "NEXT_RESPONSE_TIME": "Tempo de Próxima Resposta",
+      "RESOLUTION_TIME": "Tempo de Resolução",
+      "SLA_TIME": "Tempo SLA:",
+      "REAL_TIME": "Tempo Real:"
+    },
     "SHOPIFY": {
       "ORDER_ID": "Order #{id}",
       "ERROR": "Error loading orders",
