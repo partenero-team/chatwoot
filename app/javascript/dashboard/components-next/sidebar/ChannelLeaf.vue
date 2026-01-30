@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import Icon from 'next/icon/Icon.vue';
+// import Icon from 'next/icon/Icon.vue';
 import ChannelIcon from 'next/icon/ChannelIcon.vue';
 
 const props = defineProps({
@@ -18,9 +18,9 @@ const props = defineProps({
   },
 });
 
-const reauthorizationRequired = computed(() => {
-  return props.inbox.reauthorization_required;
-});
+// const reauthorizationRequired = computed(() => {
+//   return props.inbox.reauthorization_required;
+// });
 </script>
 
 <template>
