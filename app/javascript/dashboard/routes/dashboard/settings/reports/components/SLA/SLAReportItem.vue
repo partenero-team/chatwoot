@@ -227,6 +227,5 @@ const rt = computed(() =>
         :sla-policy="appliedSla"
       />
     </div>
-    <SLAViewDetails :sla-events="slaEvents" />
   </div>
 </template>
