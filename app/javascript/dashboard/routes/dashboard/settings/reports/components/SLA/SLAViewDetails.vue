@@ -57,6 +57,7 @@ export default {
         :sla-missed-events="slaEvents"
         :conversation-created-at="conversationCreatedAt"
         :sla-policy="slaPolicy"
+        class="right-0"
       />
     </div>
   </div>
