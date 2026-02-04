@@ -354,6 +354,8 @@
       "SLA": "SLA"
     },
     "SLA": {
+      "POLICY": "Policy",
+      "NO_SLA": "No SLA applied to this conversation",
       "STARTED_AT": "Started at",
       "FIRST_RESPONSE_TIME": "First Response Time",
       "NEXT_RESPONSE_TIME": "Next Response Time",

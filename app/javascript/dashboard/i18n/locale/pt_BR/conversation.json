@@ -353,6 +353,8 @@
       "SLA": "SLA"
     },
     "SLA": {
+      "POLICY": "Política",
+      "NO_SLA": "Nenhuma política de SLA aplicada a esta conversa",
       "STARTED_AT": "Início em",
       "FIRST_RESPONSE_TIME": "Tempo de Primeira Resposta",
       "NEXT_RESPONSE_TIME": "Tempo de Próxima Resposta",

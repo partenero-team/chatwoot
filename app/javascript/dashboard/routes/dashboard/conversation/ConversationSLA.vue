@@ -94,7 +94,7 @@ const rt = computed(() =>
 
       <div class="flex flex-col gap-1">
         <span class="text-xs font-medium text-n-slate-11">
-          {{ $t('CONVERSATION_SIDEBAR.SLA.START_TIME') }}
+          {{ $t('CONVERSATION_SIDEBAR.SLA.STARTED_AT') }}
         </span>
         <span class="text-sm text-n-slate-12">
           {{ formatSlaStartTime }}
@@ -108,7 +108,7 @@ const rt = computed(() =>
         <div class="flex flex-col gap-1">
           <div class="flex items-center gap-2">
             <span class="text-xs text-n-slate-11">{{
-              $t('CONVERSATION_SIDEBAR.SLA.TARGET')
+              $t('CONVERSATION_SIDEBAR.SLA.SLA_TIME')
             }}</span>
             <span class="text-sm font-medium text-n-slate-12">
               {{
@@ -120,7 +120,7 @@ const rt = computed(() =>
           </div>
           <div class="flex items-center gap-2">
             <span class="text-xs text-n-slate-11">{{
-              $t('CONVERSATION_SIDEBAR.SLA.ACTUAL')
+              $t('CONVERSATION_SIDEBAR.SLA.REAL_TIME')
             }}</span>
             <span
               class="text-sm font-medium"
@@ -161,7 +161,7 @@ const rt = computed(() =>
         <div class="flex flex-col gap-1">
           <div class="flex items-center gap-2">
             <span class="text-xs text-n-slate-11">{{
-              $t('CONVERSATION_SIDEBAR.SLA.TARGET')
+              $t('CONVERSATION_SIDEBAR.SLA.SLA_TIME')
             }}</span>
             <span class="text-sm font-medium text-n-slate-12">
               {{ formatDuration(appliedSla.sla_next_response_time_threshold) }}
@@ -169,7 +169,7 @@ const rt = computed(() =>
           </div>
           <div class="flex items-center gap-2">
             <span class="text-xs text-n-slate-11">{{
-              $t('CONVERSATION_SIDEBAR.SLA.ACTUAL')
+              $t('CONVERSATION_SIDEBAR.SLA.REAL_TIME')
             }}</span>
             <span
               class="text-sm font-medium"
@@ -210,7 +210,7 @@ const rt = computed(() =>
         <div class="flex flex-col gap-1">
           <div class="flex items-center gap-2">
             <span class="text-xs text-n-slate-11">{{
-              $t('CONVERSATION_SIDEBAR.SLA.TARGET')
+              $t('CONVERSATION_SIDEBAR.SLA.SLA_TIME')
             }}</span>
             <span class="text-sm font-medium text-n-slate-12">
               {{ formatDuration(appliedSla.sla_resolution_time_threshold) }}
@@ -218,7 +218,7 @@ const rt = computed(() =>
           </div>
           <div class="flex items-center gap-2">
             <span class="text-xs text-n-slate-11">{{
-              $t('CONVERSATION_SIDEBAR.SLA.ACTUAL')
+              $t('CONVERSATION_SIDEBAR.SLA.REAL_TIME')
             }}</span>
             <span
               class="text-sm font-medium"
