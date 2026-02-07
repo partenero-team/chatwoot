@@ -113,7 +113,7 @@ const calculateResolutionTime = () => {
     return { time, dot: null, textClass: '' };
   }
 
-  const diff = threshold - realSeconds;
+  const diff = realSeconds - threshold;
 
   if (diff <= 0) {
     return { time, dot: 'bg-green-600', textClass: 'text-green-600' };
