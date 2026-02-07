@@ -100,19 +100,20 @@ const calculateRealTime = (event, threshold) => {
 const calculateResolutionTime = () => {
   const slaAppliedAt = props.appliedSla.created_at;
   const threshold = props.appliedSla.sla_resolution_time_threshold;
+  const status = props.conversation.status;
 
-  if (!threshold || !slaAppliedAt || props.conversation.status !== 'resolved') {
+  if (!threshold || !slaAppliedAt || status !== 'resolved') {
     return { time: '--', dot: null, textClass: '' };
   }
   
-  const realSeconds = props.conversation.created_at - slaAppliedAt;
+  const realSeconds = props.conversation.updated_at - slaAppliedAt;
   const time = formatDuration(realSeconds);
 
   if (!threshold) {
     return { time, dot: null, textClass: '' };
   }
 
-  const diff = realSeconds - threshold;
+  const diff = threshold - realSeconds;
 
   if (diff <= 0) {
     return { time, dot: 'bg-green-600', textClass: 'text-green-600' };
