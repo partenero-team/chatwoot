@@ -12,14 +12,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    conversationCreatedAt: {
-      type: Number,
-      default: null,
-    },
-    slaPolicy: {
-      type: Object,
-      default: () => ({}),
-    },
   },
 
   data() {
@@ -42,7 +34,7 @@ export default {
 <template>
   <div
     v-on-clickaway="closeSlaEvents"
-    class="flex items-center text-n-slate-11 justify-end"
+    class="flex items-center col-span-1 text-n-slate-11 justify-end"
   >
     <div class="relative">
       <NextButton
@@ -55,8 +47,6 @@ export default {
       <SLAPopoverCard
         v-if="showSlaPopoverCard"
         :sla-missed-events="slaEvents"
-        :conversation-created-at="conversationCreatedAt"
-        :sla-policy="slaPolicy"
         class="right-0"
       />
     </div>

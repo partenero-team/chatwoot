@@ -58,6 +58,34 @@ const calculateRealTime = (event, threshold) => {
   return { time, status: 'missed' };
 };
 
+const calculateResolutionTime = () => {
+  const slaAppliedAt = appliedSla.value.created_at;
+  const threshold = appliedSla.value?.sla_resolution_time_threshold
+
+  if (!threshold || !props.appliedSla.created_at || currentChat.value.status !== 'resolved') {
+    return { time: '--', dot: null, textClass: '' };
+  }
+  
+  realSeconds = currentChat.value.created_at - slaAppliedAt;
+  const time = formatDuration(realSeconds);
+
+  if (!threshold) {
+    return { time, dot: null, textClass: '' };
+  }
+
+  const diff = realSeconds - threshold;
+
+  if (diff <= 0) {
+    return { time, status: 'hit' };
+  }
+
+  if (diff <= threshold * 0.2) {
+    return { time, status: 'warning' };
+  }
+
+  return { time, status: 'missed' };
+};
+
 const frt = computed(() =>
   calculateRealTime(
     getEventByType('frt'),
@@ -73,10 +101,11 @@ const nrt = computed(() =>
 );
 
 const rt = computed(() =>
-  calculateRealTime(
-    getEventByType('rt'),
-    appliedSla.value?.sla_resolution_time_threshold
-  )
+  // calculateRealTime(
+  //   getEventByType('rt'),
+  //   appliedSla.value?.sla_resolution_time_threshold
+  // )
+  calculateResolutionTime()
 );
 </script>
 
@@ -151,7 +180,7 @@ const rt = computed(() =>
         </div>
       </div>
 
-      <div
+      <!-- <div
         v-if="appliedSla.sla_next_response_time_threshold"
         class="flex flex-col gap-2"
       >
@@ -198,7 +227,7 @@ const rt = computed(() =>
             />
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div
         v-if="appliedSla.sla_resolution_time_threshold"

@@ -66,7 +66,7 @@ export default {
         <div>{{ $t('SLA_REPORTS.TABLE.HEADER.AGENT') }}</div>
         <div>{{ $t('SLA_REPORTS.TABLE.HEADER.SLA_START') }}</div>
         <div>{{ $t('SLA_REPORTS.TABLE.HEADER.FIRST_RESPONSE_TIME') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.NEXT_RESPONSE_TIME') }}</div>
+        <!-- <div>{{ $t('SLA_REPORTS.TABLE.HEADER.NEXT_RESPONSE_TIME') }}</div> -->
         <div>{{ $t('SLA_REPORTS.TABLE.HEADER.RESOLUTION_TIME') }}</div>
         <div></div>
       </div>

@@ -97,6 +97,34 @@ const calculateRealTime = (event, threshold) => {
   return { time, dot: 'bg-red-600', textClass: 'text-red-600' };
 };
 
+const calculateResolutionTime = () => {
+  const slaAppliedAt = props.appliedSla.created_at;
+  const threshold = props.appliedSla.sla_resolution_time_threshold;
+
+  if (!threshold || !props.appliedSla.created_at || props.conversation.status !== 'resolved') {
+    return { time: '--', dot: null, textClass: '' };
+  }
+  
+  realSeconds = props.conversation.created_at - slaAppliedAt;
+  const time = formatDuration(realSeconds);
+
+  if (!threshold) {
+    return { time, dot: null, textClass: '' };
+  }
+
+  const diff = realSeconds - threshold;
+
+  if (diff <= 0) {
+    return { time, dot: 'bg-green-600', textClass: 'text-green-600' };
+  }
+
+  if (diff <= threshold * 0.2) {
+    return { time, dot: 'bg-yellow-600', textClass: 'text-yellow-600' };
+  }
+
+  return { time, dot: 'bg-red-600', textClass: 'text-red-600' };
+};
+
 const frt = computed(() =>
   calculateRealTime(
     getEventByType('frt'),
@@ -112,10 +140,11 @@ const nrt = computed(() =>
 );
 
 const rt = computed(() =>
-  calculateRealTime(
-    getEventByType('rt'),
-    props.appliedSla.sla_resolution_time_threshold
-  )
+  // calculateRealTime(
+  //   getEventByType('rt'),
+  //   props.appliedSla.sla_resolution_time_threshold
+  // )
+  calculateResolutionTime()
 );
 </script>
 
@@ -181,7 +210,7 @@ const rt = computed(() =>
       </div>
     </div>
 
-    <!-- NRT -->
+    <!-- NRT 
     <div class="flex flex-col gap-0.5 text-xs self-center">
       <div class="flex items-center gap-2">
         <span class="text-n-slate-11">SLA:</span>
@@ -199,7 +228,7 @@ const rt = computed(() =>
         ></span>
       </div>
     </div>
-
+    -->
     <!-- RT -->
     <div class="flex flex-col gap-0.5 text-xs self-center">
       <div class="flex items-center gap-2">
@@ -219,13 +248,6 @@ const rt = computed(() =>
       </div>
     </div>
 
-    <!-- Details -->
-    <div class="flex justify-center self-center">
-      <SLAViewDetails
-        :sla-events="slaEvents"
-        :conversation-created-at="appliedSla.created_at"
-        :sla-policy="appliedSla"
-      />
-    </div>
+    <SLAViewDetails :sla-events="slaEvents" />
   </div>
 </template>
