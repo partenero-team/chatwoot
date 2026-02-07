@@ -249,6 +249,6 @@ const rt = computed(() =>
       </div>
     </div>
 
-    <SLAViewDetails :sla-events="slaEvents" />
+    <!-- <SLAViewDetails :sla-events="slaEvents" /> -->
   </div>
 </template>
