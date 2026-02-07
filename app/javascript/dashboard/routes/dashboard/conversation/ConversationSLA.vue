@@ -62,11 +62,11 @@ const calculateResolutionTime = () => {
   const slaAppliedAt = appliedSla.value.created_at;
   const threshold = appliedSla.value?.sla_resolution_time_threshold
 
-  if (!threshold || !props.appliedSla.created_at || currentChat.value.status !== 'resolved') {
+  if (!threshold || !slaAppliedAt || currentChat.value.status !== 'resolved') {
     return { time: '--', dot: null, textClass: '' };
   }
   
-  realSeconds = currentChat.value.created_at - slaAppliedAt;
+  const realSeconds = currentChat.value.created_at - slaAppliedAt;
   const time = formatDuration(realSeconds);
 
   if (!threshold) {

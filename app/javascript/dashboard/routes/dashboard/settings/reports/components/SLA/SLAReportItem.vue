@@ -101,11 +101,11 @@ const calculateResolutionTime = () => {
   const slaAppliedAt = props.appliedSla.created_at;
   const threshold = props.appliedSla.sla_resolution_time_threshold;
 
-  if (!threshold || !props.appliedSla.created_at || props.conversation.status !== 'resolved') {
+  if (!threshold || !slaAppliedAt || props.conversation.status !== 'resolved') {
     return { time: '--', dot: null, textClass: '' };
   }
   
-  realSeconds = props.conversation.created_at - slaAppliedAt;
+  const realSeconds = props.conversation.created_at - slaAppliedAt;
   const time = formatDuration(realSeconds);
 
   if (!threshold) {
