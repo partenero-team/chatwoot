@@ -77,7 +77,7 @@ const getEventByType = type =>
 
 const calculateFRRealTime = (event, threshold) => {
 
-  const frCreatedAt = createdAt = event ? event.created_at : props.conversation.first_reply_created_at;
+  const frCreatedAt = event ? event.created_at : props.conversation.first_reply_created_at;
 
   if (!frCreatedAt) {
     return { time: '--', dot: null, textClass: '' };
@@ -97,7 +97,7 @@ const calculateFRRealTime = (event, threshold) => {
 
 const calculateResolutionTime = (event, threshold) => {
 
-  const rtCreatedAt = createdAt = event ? event.created_at : props.conversation.updated_at;
+  const rtCreatedAt = event ? event.created_at : props.conversation.updated_at;
   const slaAppliedAt = props.appliedSla.created_at;
   const status = props.conversation.status;
 
