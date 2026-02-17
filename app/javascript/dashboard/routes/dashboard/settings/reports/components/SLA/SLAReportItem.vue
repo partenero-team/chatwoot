@@ -92,7 +92,7 @@ const calculateFRRealTime = (event, threshold) => {
 
   const diff = realSeconds - threshold;
 
-  return buildReturnValue(diff, time);  
+  return buildReturnValue(diff, time, threshold);  
 };
 
 const calculateResolutionTime = (event, threshold) => {
@@ -114,11 +114,11 @@ const calculateResolutionTime = (event, threshold) => {
 
   const diff = realSeconds - threshold;
 
-  return buildReturnValue(diff, time);
+  return buildReturnValue(diff, time, threshold);
 
 };
 
-const buildReturnValue = (diff, time) => {
+const buildReturnValue = (diff, time, threshold) => {
   if (diff <= 0) {
     return { time, dot: 'bg-green-600', textClass: 'text-green-600' };
   }
