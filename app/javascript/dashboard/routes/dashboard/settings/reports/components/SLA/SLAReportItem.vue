@@ -5,6 +5,7 @@ import { format, fromUnixTime, intervalToDuration } from 'date-fns';
 import UserAvatarWithName from 'dashboard/components/widgets/UserAvatarWithName.vue';
 import CardLabels from 'dashboard/components/widgets/conversation/conversationCardComponents/CardLabels.vue';
 import SLAViewDetails from './SLAViewDetails.vue';
+import wootConstants from 'dashboard/constants/globals';
 
 const props = defineProps({
   slaName: {
