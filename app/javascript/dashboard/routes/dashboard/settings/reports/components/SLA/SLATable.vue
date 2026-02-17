@@ -63,15 +63,15 @@ export default {
           :label="$t('SLA_REPORTS.TABLE.HEADER.CONVERSATION')"
         />
         <TableHeaderCell
-          :span="2"
+          :span="1"
           :label="$t('SLA_REPORTS.TABLE.HEADER.POLICY')"
         />
         <TableHeaderCell
           :span="2"
           :label="$t('SLA_REPORTS.TABLE.HEADER.AGENT')"
         />
-        <TableHeaderCell :span="1" :label="$t('SLA_REPORTS.TABLE.HEADER.SLA_START')" />
-        <TableHeaderCell :span="1" :label="$t('SLA_REPORTS.TABLE.HEADER.FIRST_RESPONSE_TIME')" />
+        <TableHeaderCell :span="2" :label="$t('SLA_REPORTS.TABLE.HEADER.SLA_START')" />
+        <TableHeaderCell :span="2" :label="$t('SLA_REPORTS.TABLE.HEADER.FIRST_RESPONSE_TIME')" />
         <TableHeaderCell :span="1" :label="$t('SLA_REPORTS.TABLE.HEADER.RESOLUTION_TIME')" />
         
       </div>

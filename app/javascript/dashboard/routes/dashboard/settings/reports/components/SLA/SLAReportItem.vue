@@ -154,10 +154,12 @@ const rt = computed(() =>
 
 <template>
   <div
-    class="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_2fr_2fr] gap-x-6 px-10 py-6 items-center text-sm border-b border-n-weak last:border-b-0"
+    class="grid items-center content-center w-full h-16 grid-cols-12 gap-4 px-6 py-0 border-b last:border-b-0 last:rounded-b-xl border-n-weak"
   >
     <!-- Conversation -->
-    <div class="flex items-center gap-2 min-w-0 self-center">
+    <div 
+      class="flex items-center gap-2 col-span-4 px-0 py-2 text-sm tracking-[0.5] text-n-slate-12 rtl:text-right"
+    >
       <router-link
         :to="routerParams"
         class="text-n-slate-12 hover:underline flex-shrink-0"
@@ -177,12 +179,12 @@ const rt = computed(() =>
     </div>
 
     <!-- Policy -->
-    <div class="truncate self-center text-center" :title="slaName">
+    <div class="flex items-center gap-2 col-span-1 px-0 py-2 text-sm tracking-[0.5] text-n-slate-12 rtl:text-right" :title="slaName">
       {{ slaName }}
     </div>
 
     <!-- Agent (FIX DEFINITIVO) -->
-    <div class="flex items-center min-w-[120px] self-center" :class="conversation.assignee ? '' : 'justify-center'">
+    <div class="flex items-center gap-2 col-span-2 px-0 py-2 text-sm tracking-[0.5] text-n-slate-12 rtl:text-right" :class="conversation.assignee ? '' : 'justify-center'">
       <UserAvatarWithName
         v-if="conversation.assignee"
         :user="conversation.assignee"
@@ -191,12 +193,12 @@ const rt = computed(() =>
     </div>
 
     <!-- SLA Start -->
-    <div class="text-xs text-n-slate-11 self-center text-center">
+    <div class="text-xs text-n-slate-11 self-center text-center col-span-2">
       {{ formatSlaStartTime }}
     </div>
 
     <!-- FRT -->
-    <div class="flex flex-col gap-0.5 text-xs self-center">
+    <div class="flex flex-col gap-0.5 text-xs self-center col-span-2">
       <div class="flex items-center gap-2">
         <span class="text-n-slate-11">SLA:</span>
         <span class="font-medium">{{
@@ -234,7 +236,7 @@ const rt = computed(() =>
     </div>
     -->
     <!-- RT -->
-    <div class="flex flex-col gap-0.5 text-xs self-center">
+    <div class="flex flex-col gap-0.5 text-xs self-center  col-span-1">
       <div class="flex items-center gap-2">
         <span class="text-n-slate-11">SLA:</span>
         <span class="font-medium">{{
