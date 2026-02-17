@@ -56,26 +56,31 @@ export default {
 
 <template>
   <div class="w-full">
-    <div class="rounded-xl overflow-hidden border border-n-weak bg-n-solid-2 w-full">
-      <!-- HEADER (APENAS UMA VEZ) -->
-      <div
-        class="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_2fr_2fr] gap-x-6 px-10 h-16 items-center text-xs font-medium text-n-slate-11 bg-n-slate-2 border-b border-n-weak"
-      >
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.CONVERSATION') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.POLICY') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.AGENT') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.SLA_START') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.FIRST_RESPONSE_TIME') }}</div>
-        <div>{{ $t('SLA_REPORTS.TABLE.HEADER.RESOLUTION_TIME') }}</div>
+    <div class="min-w-full shadow outline-1 outline outline-n-container rounded-xl bg-n-solid-2 p-6" >
+      <div class="grid content-center h-12 grid-cols-12 gap-4 px-6 py-0 bg-n-slate-2 rounded-md" >
+        <TableHeaderCell
+          :span="4"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.CONVERSATION')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.POLICY')"
+        />
+        <TableHeaderCell
+          :span="2"
+          :label="$t('SLA_REPORTS.TABLE.HEADER.AGENT')"
+        />
+        <TableHeaderCell :span="1" :label="$t('SLA_REPORTS.TABLE.HEADER.SLA_START')" />
+        <TableHeaderCell :span="1" :label="$t('SLA_REPORTS.TABLE.HEADER.FIRST_RESPONSE_TIME')" />
+        <TableHeaderCell :span="1" :label="$t('SLA_REPORTS.TABLE.HEADER.RESOLUTION_TIME')" />
+        
       </div>
 
-      <!-- LOADING STATE -->
       <div v-if="isLoading" class="flex items-center justify-center h-32 gap-2">
         <Spinner />
         <span>{{ $t('SLA_REPORTS.LOADING') }}</span>
       </div>
 
-      <!-- ROWS -->
       <SLAReportItem
         v-else-if="slaReports.length > 0"
         v-for="slaReport in slaReports"

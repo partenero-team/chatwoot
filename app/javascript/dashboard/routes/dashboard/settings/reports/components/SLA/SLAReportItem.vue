@@ -29,6 +29,8 @@ const props = defineProps({
   },
 });
 
+const { SLA_MISS_TYPES } = wootConstants;
+
 const conversationLabels = computed(() => {
   return props.conversation.labels
     ? props.conversation.labels.split(',').map(item => item.trim())
@@ -72,12 +74,15 @@ const formatSlaStartTime = computed(() => {
 const getEventByType = type =>
   props.slaEvents.find(e => e.event_type === type);
 
-const calculateRealTime = (event, threshold) => {
-  if (!event || !props.appliedSla.created_at) {
+const calculateFRRealTime = (event, threshold) => {
+
+  const frCreatedAt = createdAt = event ? event.created_at : props.conversation.first_reply_created_at;
+
+  if (!frCreatedAt) {
     return { time: '--', dot: null, textClass: '' };
   }
 
-  const realSeconds = event.created_at - props.appliedSla.created_at;
+  const realSeconds = frCreatedAt - props.appliedSla.created_at;
   const time = formatDuration(realSeconds);
 
   if (!threshold) {
@@ -86,27 +91,20 @@ const calculateRealTime = (event, threshold) => {
 
   const diff = realSeconds - threshold;
 
-  if (diff <= 0) {
-    return { time, dot: 'bg-green-600', textClass: 'text-green-600' };
-  }
-
-  if (diff <= threshold * 0.2) {
-    return { time, dot: 'bg-yellow-600', textClass: 'text-yellow-600' };
-  }
-
-  return { time, dot: 'bg-red-600', textClass: 'text-red-600' };
+  return buildReturnValue(diff, time);  
 };
 
-const calculateResolutionTime = () => {
+const calculateResolutionTime = (event, threshold) => {
+
+  const rtCreatedAt = createdAt = event ? event.created_at : props.conversation.updated_at;
   const slaAppliedAt = props.appliedSla.created_at;
-  const threshold = props.appliedSla.sla_resolution_time_threshold;
   const status = props.conversation.status;
 
-  if (!threshold || !slaAppliedAt || status !== 'resolved') {
+  if (!rtCreatedAt || !slaAppliedAt || status !== 'resolved') {
     return { time: '--', dot: null, textClass: '' };
   }
   
-  const realSeconds = props.conversation.updated_at - slaAppliedAt;
+  const realSeconds = rtCreatedAt - slaAppliedAt;
   const time = formatDuration(realSeconds);
 
   if (!threshold) {
@@ -115,6 +113,11 @@ const calculateResolutionTime = () => {
 
   const diff = realSeconds - threshold;
 
+  return buildReturnValue(diff, time);
+
+};
+
+const buildReturnValue = (diff, time) => {
   if (diff <= 0) {
     return { time, dot: 'bg-green-600', textClass: 'text-green-600' };
   }
@@ -127,25 +130,24 @@ const calculateResolutionTime = () => {
 };
 
 const frt = computed(() =>
-  calculateRealTime(
-    getEventByType('frt'),
+  calculateFRRealTime(
+    getEventByType(SLA_MISS_TYPES.FRT),
     props.appliedSla.sla_first_response_time_threshold
   )
 );
 
-const nrt = computed(() =>
-  calculateRealTime(
-    getEventByType('nrt'),
-    props.appliedSla.sla_next_response_time_threshold
-  )
-);
+// const nrt = computed(() =>
+//   calculateRealTime(
+//     getEventByType(SLA_MISS_TYPES.NRT),
+//     props.appliedSla.sla_next_response_time_threshold
+//   )
+// );
 
 const rt = computed(() =>
-  // calculateRealTime(
-  //   getEventByType('rt'),
-  //   props.appliedSla.sla_resolution_time_threshold
-  // )
-  calculateResolutionTime()
+  calculateResolutionTime(
+    getEventByType(SLA_MISS_TYPES.RT),
+    props.appliedSla.sla_resolution_time_threshold
+  )
 );
 </script>
 
