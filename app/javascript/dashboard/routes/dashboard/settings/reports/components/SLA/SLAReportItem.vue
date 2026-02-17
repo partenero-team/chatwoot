@@ -151,7 +151,7 @@ const rt = computed(() =>
 
 <template>
   <div
-    class="grid grid-cols-[2fr_1.5fr_1.5fr_1.8fr_2fr_2fr_2fr_1fr] gap-x-6 px-10 py-6 items-center text-sm border-b border-n-weak last:border-b-0"
+    class="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_2fr_2fr] gap-x-6 px-10 py-6 items-center text-sm border-b border-n-weak last:border-b-0"
   >
     <!-- Conversation -->
     <div class="flex items-center gap-2 min-w-0 self-center">
