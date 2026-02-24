@@ -113,6 +113,6 @@ class Messages::MarkdownRendererService
   end
   
   def render_api_message
-    content.gsub(/\\\n/, "\n") # Convert escaped newlines to actual newlines
+    @content.gsub(/\\\n/, "\n") # Convert escaped newlines to actual newlines
   end
 end
