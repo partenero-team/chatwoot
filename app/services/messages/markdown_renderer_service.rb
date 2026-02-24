@@ -9,8 +9,7 @@ class Messages::MarkdownRendererService
     'Channel::Line' => :render_line,
     'Channel::TwitterProfile' => :render_plain_text,
     'Channel::Sms' => :render_plain_text,
-    'Channel::TwilioSms' => :render_plain_text,
-    'Channel::Api' => :render_api_message
+    'Channel::TwilioSms' => :render_plain_text
   }.freeze
 
   def initialize(content, channel_type, channel = nil)
@@ -112,7 +111,4 @@ class Messages::MarkdownRendererService
     end
   end
   
-  def render_api_message
-    @content.gsub(/\+\n/, "\n").gsub("\n", "\n")
-  end
 end
