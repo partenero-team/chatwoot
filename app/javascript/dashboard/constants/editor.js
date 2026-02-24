@@ -33,9 +33,9 @@ export const FORMATTING = {
     ],
   },
   'Channel::Api': {
-    marks: ['strong', 'em', 'hardBreak'],
+    marks: ['strong', 'em'],
     nodes: [],
-    menu: ['strong', 'em', 'hardBreak', 'undo', 'redo'],
+    menu: ['strong', 'em', 'undo', 'redo'],
   },
   'Channel::FacebookPage': {
     marks: ['strong', 'em', 'code', 'strike'],

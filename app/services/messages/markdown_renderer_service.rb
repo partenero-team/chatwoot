@@ -10,6 +10,7 @@ class Messages::MarkdownRendererService
     'Channel::TwitterProfile' => :render_plain_text,
     'Channel::Sms' => :render_plain_text,
     'Channel::TwilioSms' => :render_plain_text
+    'Channel::Api' => :render_api_message
   }.freeze
 
   def initialize(content, channel_type, channel = nil)
@@ -109,5 +110,9 @@ class Messages::MarkdownRendererService
     content.gsub(/\{\{PRESERVE_(\d+)_NEWLINES\}\}/) do |_match|
       "\n" * Regexp.last_match(1).to_i
     end
+  end
+  
+  def render_api_message
+    @content.gsub(/\+\n/, "\n").gsub("\n", "\n")
   end
 end
