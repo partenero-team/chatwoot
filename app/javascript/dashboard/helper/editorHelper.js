@@ -24,7 +24,6 @@ export function extractTextFromMarkdown(markdown) {
     .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images before removing links
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links but keep the text
     .replace(/#+\s*|[*_-]{1,3}/g, '') // Remove headers, bold, italic, lists etc.
-    .replace('\\\n', '\n') // Convert hard breaks to newlines
     .split('\n')
     .map(line => line.trim())
     .filter(Boolean)
