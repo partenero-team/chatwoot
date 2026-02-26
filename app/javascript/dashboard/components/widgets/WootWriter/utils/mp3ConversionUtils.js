@@ -76,9 +76,10 @@ export const encodeToMP3 = (channels, sampleRate, samples, bitrate = 128) => {
   const outputBuffer = [];
   const encoder = new lamejs.Mp3Encoder(channels, sampleRate, bitrate);
   const maxSamplesPerFrame = 1152;
+  const samplesPerChunk = maxSamplesPerFrame * channels;
 
-  for (let offset = 0; offset < samples.length; offset += maxSamplesPerFrame) {
-    const sliceEnd = Math.min(offset + maxSamplesPerFrame, samples.length);
+  for (let offset = 0; offset < samples.length; offset += samplesPerChunk) {
+    const sliceEnd = Math.min(offset + samplesPerChunk, samples.length);
     const sampleSlice = samples.subarray(offset, sliceEnd);
     const mp3Buffer = encoder.encodeBuffer(sampleSlice);
 
