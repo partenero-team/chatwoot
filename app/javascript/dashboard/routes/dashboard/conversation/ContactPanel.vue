@@ -16,6 +16,7 @@ import ConversationParticipant from './ConversationParticipant.vue';
 import ContactInfo from './contact/ContactInfo.vue';
 import ContactNotes from './contact/ContactNotes.vue';
 import ConversationInfo from './ConversationInfo.vue';
+import ConversationSLA from './ConversationSLA.vue';
 import CustomAttributes from './customAttributes/CustomAttributes.vue';
 import SharedFiles from './SharedFiles.vue';
 import Draggable from 'vuedraggable';
@@ -296,6 +297,16 @@ onMounted(() => {
               "
             >
               <ContactNotes :contact-id="contactId" />
+            </AccordionItem>
+          </div>
+          <div v-else-if="element.name === 'sla'">
+            <AccordionItem
+              :title="$t('CONVERSATION_SIDEBAR.ACCORDION.SLA')"
+              :is-open="isContactSidebarItemOpen('is_sla_open')"
+              compact
+              @toggle="value => toggleSidebarUIState('is_sla_open', value)"
+            >
+              <ConversationSLA :conversation-id="conversationId" />
             </AccordionItem>
           </div>
           <div v-else-if="element.name === 'shared_files'">

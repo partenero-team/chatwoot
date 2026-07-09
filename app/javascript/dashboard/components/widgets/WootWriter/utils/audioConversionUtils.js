@@ -75,14 +75,35 @@ export const convertToWav = async audioBlob => {
  * @returns {Blob} - The MP3 encoded audio as a Blob.
  */
 export const encodeToMP3 = (channels, sampleRate, samples, bitrate = 128) => {
+  if (channels !== 1 && channels !== 2) {
+    throw new Error('MP3 encoding only supports mono (1) or stereo (2) channels');
+  }
+
   const outputBuffer = [];
   const encoder = new lamejs.Mp3Encoder(channels, sampleRate, bitrate);
   const maxSamplesPerFrame = 1152;
 
-  for (let offset = 0; offset < samples.length; offset += maxSamplesPerFrame) {
-    const sliceEnd = Math.min(offset + maxSamplesPerFrame, samples.length);
+  for (let offset = 0; offset < samples.length; offset += maxSamplesPerFrame * channels) {
+    const sliceEnd = Math.min(
+      offset + maxSamplesPerFrame * channels,
+      samples.length
+    );
     const sampleSlice = samples.subarray(offset, sliceEnd);
-    const mp3Buffer = encoder.encodeBuffer(sampleSlice);
+
+    // For stereo, split interleaved samples into separate channel arrays
+    const channelSamples = [];
+    for (let ch = 0; ch < channels; ch++) {
+      const channel = [];
+      for (let i = ch; i < sampleSlice.length; i += channels) {
+        channel.push(sampleSlice[i]);
+      }
+      channelSamples.push(new Int16Array(channel));
+    }
+
+    const mp3Buffer =
+      channels === 1
+        ? encoder.encodeBuffer(channelSamples[0])
+        : encoder.encodeBuffer(channelSamples[0], channelSamples[1]);
 
     if (mp3Buffer.length > 0) {
       outputBuffer.push(new Int8Array(mp3Buffer));

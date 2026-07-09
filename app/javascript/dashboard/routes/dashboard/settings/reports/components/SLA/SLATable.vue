@@ -55,46 +55,50 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div
-      class="min-w-full shadow outline-1 outline outline-n-container rounded-xl bg-n-solid-2 p-6"
-    >
-      <div
-        class="grid content-center h-12 grid-cols-12 gap-4 px-6 py-0 bg-n-slate-2 rounded-md"
-      >
+  <div class="w-full">
+    <div class="min-w-full shadow outline-1 outline outline-n-container rounded-xl bg-n-solid-2 p-6" >
+      <div class="grid content-center h-12 grid-cols-12 gap-4 px-6 py-0 bg-n-slate-2 rounded-md" >
         <TableHeaderCell
-          :span="6"
+          :span="4"
           :label="$t('SLA_REPORTS.TABLE.HEADER.CONVERSATION')"
         />
         <TableHeaderCell
-          :span="2"
+          :span="1"
           :label="$t('SLA_REPORTS.TABLE.HEADER.POLICY')"
         />
         <TableHeaderCell
           :span="2"
           :label="$t('SLA_REPORTS.TABLE.HEADER.AGENT')"
         />
-        <TableHeaderCell :span="1" label="" />
+        <TableHeaderCell :span="2" :label="$t('SLA_REPORTS.TABLE.HEADER.SLA_START')" />
+        <TableHeaderCell :span="2" :label="$t('SLA_REPORTS.TABLE.HEADER.FIRST_RESPONSE_TIME')" />
+        <TableHeaderCell :span="1" :label="$t('SLA_REPORTS.TABLE.HEADER.RESOLUTION_TIME')" />
+        
       </div>
 
-      <div v-if="isLoading" class="flex items-center justify-center h-32">
+      <div v-if="isLoading" class="flex items-center justify-center h-32 gap-2">
         <Spinner />
         <span>{{ $t('SLA_REPORTS.LOADING') }}</span>
       </div>
-      <div v-else-if="slaReports.length > 0">
-        <SLAReportItem
-          v-for="slaReport in slaReports"
-          :key="slaReport.applied_sla.id"
-          :sla-name="slaReport.applied_sla.sla_name"
-          :conversation="slaReport.conversation"
-          :conversation-id="slaReport.conversation.id"
-          :sla-events="slaReport.sla_events"
-        />
-      </div>
+
+      <SLAReportItem
+        v-else-if="slaReports.length > 0"
+        v-for="slaReport in slaReports"
+        :key="slaReport.applied_sla.id"
+        :sla-name="slaReport.applied_sla.sla_name"
+        :conversation="slaReport.conversation"
+        :conversation-id="slaReport.conversation.id"
+        :sla-events="slaReport.sla_events"
+        :applied-sla="slaReport.applied_sla"
+      />
+
+      <!-- EMPTY STATE -->
       <div v-else class="flex items-center justify-center h-32">
         {{ $t('SLA_REPORTS.NO_RECORDS') }}
       </div>
     </div>
+
+    <!-- FOOTER -->
     <TableFooter
       v-if="shouldShowFooter"
       :current-page="currentPage"

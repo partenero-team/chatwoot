@@ -30,7 +30,10 @@ const reauthorizationRequired = computed(() => {
 </script>
 
 <template>
-  <span class="size-4 grid place-content-center rounded-full">
+  <span
+    class="size-4 grid place-content-center rounded-full"
+    :class="{ 'bg-n-solid-blue': active }"
+  >
     <ChannelIcon :inbox="inbox" class="size-4" />
   </span>
   <div class="flex-1 truncate min-w-0">{{ label }}</div>

@@ -1,5 +1,6 @@
 <script>
 import AddSLA from './AddSLA.vue';
+import EditSLA from './EditSLA.vue';
 import SettingsLayout from '../SettingsLayout.vue';
 import BaseSettingsHeader from 'dashboard/routes/dashboard/settings/components/BaseSettingsHeader.vue';
 import SLAPaywallEnterprise from './SLAPaywallEnterprise.vue';
@@ -20,6 +21,7 @@ import { picoSearch } from '@scmmishra/pico-search';
 export default {
   components: {
     AddSLA,
+    EditSLA,
     SettingsLayout,
     BaseSettingsHeader,
     SLAPaywallEnterprise,
@@ -34,15 +36,16 @@ export default {
     return {
       loading: {},
       showAddPopup: false,
+      showEditPopup: false,
       showDeleteConfirmationPopup: false,
       selectedResponse: {},
+      selectedSlaForEdit: null,
       searchQuery: '',
     };
   },
   computed: {
     ...mapGetters({
       isOnChatwootCloud: 'globalConfig/isOnChatwootCloud',
-      isFeatureEnabledonAccount: 'accounts/isFeatureEnabledonAccount',
       records: 'sla/getSLA',
       currentUser: 'getCurrentUser',
       accountId: 'getCurrentAccountId',
@@ -58,7 +61,7 @@ export default {
       return ` ${this.selectedResponse.name}`;
     },
     isBehindAPaywall() {
-      return !this.isFeatureEnabledonAccount(this.accountId, 'sla');
+      return false;
     },
     isSuperAdmin() {
       return this.currentUser.type === 'SuperAdmin';
@@ -91,6 +94,17 @@ export default {
     },
     hideAddPopup() {
       this.showAddPopup = false;
+    },
+    openEditPopup(sla) {
+      if (this.isBehindAPaywall) {
+        return;
+      }
+      this.selectedSlaForEdit = sla;
+      this.showEditPopup = true;
+    },
+    hideEditPopup() {
+      this.showEditPopup = false;
+      this.selectedSlaForEdit = null;
     },
     openDeletePopup(response) {
       this.showDeleteConfirmationPopup = true;
@@ -301,6 +315,14 @@ export default {
 
       <woot-modal v-model:show="showAddPopup" :on-close="hideAddPopup">
         <AddSLA @close="hideAddPopup" />
+      </woot-modal>
+
+      <woot-modal v-model:show="showEditPopup" :on-close="hideEditPopup">
+        <EditSLA
+          v-if="selectedSlaForEdit"
+          :selected-sla="selectedSlaForEdit"
+          @close="hideEditPopup"
+        />
       </woot-modal>
 
       <woot-delete-modal

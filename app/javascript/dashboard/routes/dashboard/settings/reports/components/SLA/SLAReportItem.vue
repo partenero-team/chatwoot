@@ -1,8 +1,12 @@
 <script setup>
 import { computed } from 'vue';
+import { format, fromUnixTime, intervalToDuration } from 'date-fns';
+
 import UserAvatarWithName from 'dashboard/components/widgets/UserAvatarWithName.vue';
 import CardLabels from 'dashboard/components/widgets/conversation/conversationCardComponents/CardLabels.vue';
 import SLAViewDetails from './SLAViewDetails.vue';
+import wootConstants from 'dashboard/constants/globals';
+
 const props = defineProps({
   slaName: {
     type: String,
@@ -20,7 +24,13 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  appliedSla: {
+    type: Object,
+    default: () => ({}),
+  },
 });
+
+const { SLA_MISS_TYPES } = wootConstants;
 
 const conversationLabels = computed(() => {
   return props.conversation.labels
@@ -32,43 +42,218 @@ const routerParams = computed(() => ({
   name: 'inbox_conversation',
   params: { conversation_id: props.conversationId },
 }));
+
+const formatDuration = seconds => {
+  if (!seconds || seconds < 0) return '--';
+
+  const duration = intervalToDuration({
+    start: 0,
+    end: seconds * 1000,
+  });
+
+  const parts = [];
+  if (duration.days) parts.push(`${duration.days}d`);
+  if (duration.hours) parts.push(`${duration.hours}h`);
+  if (duration.minutes) parts.push(`${duration.minutes}m`);
+  if (!parts.length && duration.seconds) parts.push(`${duration.seconds}s`);
+
+  return parts.join(' ') || '0s';
+};
+
+const formatThreshold = threshold =>
+  threshold ? formatDuration(threshold) : '--';
+
+const formatSlaStartTime = computed(() => {
+  return props.appliedSla.created_at
+    ? format(
+        fromUnixTime(props.appliedSla.created_at),
+        'MMM dd, yyyy, HH:mm'
+      )
+    : '--';
+});
+
+const getEventByType = type =>
+  props.slaEvents.find(e => e.event_type === type);
+
+const calculateFRRealTime = (event, threshold) => {
+
+  const frCreatedAt = event ? event.created_at : props.conversation.first_reply_created_at;
+
+  if (!frCreatedAt) {
+    return { time: '--', dot: null, textClass: '' };
+  }
+
+  const realSeconds = frCreatedAt - props.appliedSla.created_at;
+  const time = formatDuration(realSeconds);
+
+  if (!threshold) {
+    return { time, dot: null, textClass: '' };
+  }
+
+  const diff = realSeconds - threshold;
+
+  return buildReturnValue(diff, time, threshold);  
+};
+
+const calculateResolutionTime = (event, threshold) => {
+
+  const rtCreatedAt = event ? event.created_at : props.conversation.updated_at;
+  const slaAppliedAt = props.appliedSla.created_at;
+  const status = props.conversation.status;
+
+  if (!rtCreatedAt || !slaAppliedAt || status !== 'resolved') {
+    return { time: '--', dot: null, textClass: '' };
+  }
+  
+  const realSeconds = rtCreatedAt - slaAppliedAt;
+  const time = formatDuration(realSeconds);
+
+  if (!threshold) {
+    return { time, dot: null, textClass: '' };
+  }
+
+  const diff = realSeconds - threshold;
+
+  return buildReturnValue(diff, time, threshold);
+
+};
+
+const buildReturnValue = (diff, time, threshold) => {
+  if (diff <= 0) {
+    return { time, dot: 'bg-green-600', textClass: 'text-green-600' };
+  }
+
+  if (diff <= threshold * 0.2) {
+    return { time, dot: 'bg-yellow-600', textClass: 'text-yellow-600' };
+  }
+
+  return { time, dot: 'bg-red-600', textClass: 'text-red-600' };
+};
+
+const frt = computed(() =>
+  calculateFRRealTime(
+    getEventByType(SLA_MISS_TYPES.FRT),
+    props.appliedSla.sla_first_response_time_threshold
+  )
+);
+
+// const nrt = computed(() =>
+//   calculateRealTime(
+//     getEventByType(SLA_MISS_TYPES.NRT),
+//     props.appliedSla.sla_next_response_time_threshold
+//   )
+// );
+
+const rt = computed(() =>
+  calculateResolutionTime(
+    getEventByType(SLA_MISS_TYPES.RT),
+    props.appliedSla.sla_resolution_time_threshold
+  )
+);
 </script>
 
 <template>
   <div
     class="grid items-center content-center w-full h-16 grid-cols-12 gap-4 px-6 py-0 border-b last:border-b-0 last:rounded-b-xl border-n-weak"
   >
-    <div
-      class="flex items-center gap-2 col-span-6 px-0 py-2 text-sm tracking-[0.5] text-n-slate-12 rtl:text-right"
+    <!-- Conversation -->
+    <div 
+      class="flex items-center gap-2 col-span-4 px-0 py-2 text-sm tracking-[0.5] text-n-slate-12 rtl:text-right"
     >
-      <router-link :to="routerParams" class="text-n-slate-12 hover:underline">
-        {{ `#${conversationId}` }}
+      <router-link
+        :to="routerParams"
+        class="text-n-slate-12 hover:underline flex-shrink-0"
+      >
+        #{{ conversationId }}
       </router-link>
-      <span class="text-n-slate-11">
-        {{ $t('SLA_REPORTS.WITH') }}
+      <span class="text-n-slate-11 flex-shrink-0">with</span>
+      <span class="truncate text-n-slate-12 min-w-0">
+        {{ conversation.contact.name }}
       </span>
-      <span class="capitalize truncate text-n-slate-12">{{
-        conversation.contact.name
-      }}</span>
       <CardLabels
         v-if="conversationLabels.length"
-        class="w-[60%]"
+        class="flex-shrink-0"
         :conversation-id="conversationId"
         :conversation-labels="conversationLabels"
       />
     </div>
-    <div
-      class="flex items-center capitalize py-2 px-0 text-sm tracking-[0.5] text-n-slate-12 text-left rtl:text-right col-span-2"
-    >
+
+    <!-- Policy -->
+    <div class="flex items-center gap-2 col-span-1 px-0 py-2 text-sm tracking-[0.5] text-n-slate-12 rtl:text-right" :title="slaName">
       {{ slaName }}
     </div>
-    <div class="flex items-center col-span-2 gap-2">
+
+    <!-- Agent (FIX DEFINITIVO) -->
+    <div class="flex items-center gap-2 col-span-2 px-0 py-2 text-sm tracking-[0.5] text-n-slate-12 rtl:text-right" :class="conversation.assignee ? '' : 'justify-center'">
       <UserAvatarWithName
         v-if="conversation.assignee"
         :user="conversation.assignee"
       />
-      <span v-else class="text-n-slate-11"> --- </span>
+      <span v-else class="text-n-slate-11">---</span>
     </div>
-    <SLAViewDetails :sla-events="slaEvents" />
+
+    <!-- SLA Start -->
+    <div class="text-xs text-n-slate-11 self-center text-center col-span-2">
+      {{ formatSlaStartTime }}
+    </div>
+
+    <!-- FRT -->
+    <div class="flex flex-col gap-0.5 text-xs self-center col-span-2">
+      <div class="flex items-center gap-2">
+        <span class="text-n-slate-11">SLA:</span>
+        <span class="font-medium">{{
+          formatThreshold(appliedSla.sla_first_response_time_threshold)
+        }}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-n-slate-11">Real:</span>
+        <span class="font-medium" :class="frt.textClass">{{ frt.time }}</span>
+        <span
+          v-if="frt.dot"
+          class="w-2 h-2 rounded-full flex-shrink-0"
+          :class="frt.dot"
+        ></span>
+      </div>
+    </div>
+
+    <!-- NRT 
+    <div class="flex flex-col gap-0.5 text-xs self-center">
+      <div class="flex items-center gap-2">
+        <span class="text-n-slate-11">SLA:</span>
+        <span class="font-medium">{{
+          formatThreshold(appliedSla.sla_next_response_time_threshold)
+        }}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-n-slate-11">Real:</span>
+        <span class="font-medium" :class="nrt.textClass">{{ nrt.time }}</span>
+        <span
+          v-if="nrt.dot"
+          class="w-2 h-2 rounded-full flex-shrink-0"
+          :class="nrt.dot"
+        ></span>
+      </div>
+    </div>
+    -->
+    <!-- RT -->
+    <div class="flex flex-col gap-0.5 text-xs self-center  col-span-1">
+      <div class="flex items-center gap-2">
+        <span class="text-n-slate-11">SLA:</span>
+        <span class="font-medium">{{
+          formatThreshold(appliedSla.sla_resolution_time_threshold)
+        }}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-n-slate-11">Real:</span>
+        <span class="font-medium" :class="rt.textClass">{{ rt.time }}</span>
+        <span
+          v-if="rt.dot"
+          class="w-2 h-2 rounded-full flex-shrink-0"
+          :class="rt.dot"
+        ></span>
+      </div>
+    </div>
+
+    <!-- <SLAViewDetails :sla-events="slaEvents" /> -->
   </div>
 </template>
