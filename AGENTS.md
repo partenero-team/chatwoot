@@ -116,3 +116,12 @@ Practical checklist for any change impacting core logic or public APIs
 ## Branding / White-labeling note
 
 - For user-facing strings that currently contain "Chatwoot" but should adapt to branded/self-hosted installs, prefer applying `replaceInstallationName` from `shared/composables/useBranding` in the UI layer (for example tooltip and suggestion labels) instead of adding hardcoded brand-specific copy.
+
+## Registro de sessão na Partenero
+
+Toda sessão neste repositório é registrada como tarefa no **Sprint atual** do workspace da
+Partenero. Antes de criar, buscar tarefa parecida e reaproveitá-la; se o usuário der o id da
+tarefa ou do tíquete, atualizar esse direto. No fim, comentário **interno** na tarefa com o
+resumo do plano, dos testes e da implementação (plano anexado) e, havendo tíquete relacionado,
+comentário interno nele sobre a implementação. Protocolo e script em `~/.claude/CLAUDE.md`
+(seção "Registro de sessão na Partenero") e `~/.claude/partenero/sessao.mjs`.
